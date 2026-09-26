@@ -1,0 +1,434 @@
+
+{% extends "base.html" %}
+
+{% block title %}
+Sign Document - {{ application_name }}
+{% endblock %}
+
+{% block page_title %}
+Sign Document
+{% endblock %}
+
+{% block content %}
+
+<!--
+    MAIN CONTENT
+    Original width is preserved at 750px.
+    The container is aligned to the LEFT.
+-->
+<div style="
+    width:100%;
+    max-width:750px;
+    margin-left:0;
+    margin-right:auto;
+">
+
+    <!-- SIGN DOCUMENT CARD -->
+    <div class="card">
+
+        <h2 style="margin-top:0;">
+            📄 Sign a PDF Document
+        </h2>
+
+        <p style="
+            color:#718096;
+            margin:8px 0 25px;
+            line-height:1.6;
+        ">
+            Upload a PDF and the system will apply the
+            configured signature and stamp.
+        </p>
+
+        <form
+            method="POST"
+            enctype="multipart/form-data"
+            id="uploadForm"
+        >
+
+            <!-- PDF UPLOAD AREA -->
+            <div
+                id="uploadArea"
+                style="
+                    border:2px dashed #cbd5e1;
+                    border-radius:16px;
+                    padding:50px 25px;
+                    text-align:center;
+                    background:#f8fafc;
+                    transition:all 0.25s ease;
+                "
+            >
+
+                <div style="
+                    font-size:48px;
+                    line-height:1;
+                    margin-bottom:10px;
+                ">
+                    📄
+                </div>
+
+                <h3 style="
+                    margin:12px 0 7px;
+                    color:#1a202c;
+                ">
+                    Choose PDF Document
+                </h3>
+
+                <p style="
+                    color:#718096;
+                    font-size:13px;
+                    margin-bottom:20px;
+                ">
+                    PDF files only · Maximum 25 MB
+                </p>
+
+                <!-- FILE INPUT -->
+                <input
+                    type="file"
+                    name="document"
+                    id="document"
+                    accept=".pdf,application/pdf"
+                    required
+                    style="
+                        max-width:100%;
+                    "
+                >
+
+                <!-- SELECTED FILE -->
+                <div
+                    id="fileName"
+                    style="
+                        margin-top:15px;
+                        color:#173f5f;
+                        font-weight:600;
+                        word-break:break-word;
+                    "
+                >
+                </div>
+
+            </div>
+
+            <!-- ACTION BUTTONS -->
+            <div style="
+                display:flex;
+                gap:10px;
+                margin-top:25px;
+                justify-content:flex-end;
+                flex-wrap:wrap;
+            ">
+
+                <a
+                    class="btn btn-light"
+                    href="{{ url_for('dashboard') }}"
+                >
+                    Cancel
+                </a>
+
+                <button
+                    type="submit"
+                    class="btn btn-primary"
+                    id="submitButton"
+                >
+                    ✓ Sign PDF
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+
+    <!-- SIGNATURE & STAMP INFORMATION -->
+    <div
+        class="grid grid-2"
+        style="margin-top:20px;"
+    >
+
+        <!-- SIGNATURE -->
+        <div class="card">
+
+            <strong>
+                ✍️ Signature
+            </strong>
+
+            <p style="
+                color:#718096;
+                font-size:12px;
+                margin-top:7px;
+                line-height:1.6;
+            ">
+                The stored signature will be applied
+                to each page of the uploaded PDF.
+            </p>
+
+        </div>
+
+
+        <!-- STAMP -->
+        <div class="card">
+
+            <strong>
+                🔴 Stamp
+            </strong>
+
+            <p style="
+                color:#718096;
+                font-size:12px;
+                margin-top:7px;
+                line-height:1.6;
+            ">
+                The stored stamp will be applied
+                to each page of the uploaded PDF.
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+
+{% block scripts %}
+
+<script>
+
+const fileInput =
+    document.getElementById("document");
+
+const fileName =
+    document.getElementById("fileName");
+
+const form =
+    document.getElementById("uploadForm");
+
+const button =
+    document.getElementById("submitButton");
+
+const uploadArea =
+    document.getElementById("uploadArea");
+
+
+/*
+|--------------------------------------------------------------------------
+| FILE SELECTION
+|--------------------------------------------------------------------------
+*/
+
+fileInput.addEventListener(
+    "change",
+    function() {
+
+        if (this.files.length) {
+
+            const file =
+                this.files[0];
+
+            fileName.textContent =
+                "Selected: " + file.name;
+
+            uploadArea.style.borderColor =
+                "#173f5f";
+
+            uploadArea.style.background =
+                "#f1f5f9";
+
+        } else {
+
+            fileName.textContent = "";
+
+            uploadArea.style.borderColor =
+                "#cbd5e1";
+
+            uploadArea.style.background =
+                "#f8fafc";
+        }
+
+    }
+);
+
+
+/*
+|--------------------------------------------------------------------------
+| DRAG & DROP
+|--------------------------------------------------------------------------
+*/
+
+uploadArea.addEventListener(
+    "dragover",
+    function(event) {
+
+        event.preventDefault();
+
+        uploadArea.style.borderColor =
+            "#173f5f";
+
+        uploadArea.style.background =
+            "#eef6ff";
+
+    }
+);
+
+
+uploadArea.addEventListener(
+    "dragleave",
+    function() {
+
+        uploadArea.style.borderColor =
+            "#cbd5e1";
+
+        uploadArea.style.background =
+            "#f8fafc";
+
+    }
+);
+
+
+uploadArea.addEventListener(
+    "drop",
+    function(event) {
+
+        event.preventDefault();
+
+        const files =
+            event.dataTransfer.files;
+
+        if (files.length) {
+
+            const file =
+                files[0];
+
+            /*
+             * Only allow PDF files.
+             */
+            if (
+                file.type !== "application/pdf" &&
+                !file.name.toLowerCase().endsWith(".pdf")
+            ) {
+
+                alert(
+                    "Please select a PDF document."
+                );
+
+                return;
+            }
+
+            /*
+             * Maximum 25 MB.
+             */
+            const maxSize =
+                25 * 1024 * 1024;
+
+            if (file.size > maxSize) {
+
+                alert(
+                    "The PDF file must not exceed 25 MB."
+                );
+
+                return;
+            }
+
+            /*
+             * Put dropped file into the input.
+             */
+            const dataTransfer =
+                new DataTransfer();
+
+            dataTransfer.items.add(file);
+
+            fileInput.files =
+                dataTransfer.files;
+
+            fileName.textContent =
+                "Selected: " + file.name;
+
+            uploadArea.style.borderColor =
+                "#173f5f";
+
+            uploadArea.style.background =
+                "#f1f5f9";
+        }
+
+    }
+);
+
+
+/*
+|--------------------------------------------------------------------------
+| FORM SUBMISSION
+|--------------------------------------------------------------------------
+*/
+
+form.addEventListener(
+    "submit",
+    function(event) {
+
+        /*
+         * Check that a file exists.
+         */
+        if (!fileInput.files.length) {
+
+            event.preventDefault();
+
+            alert(
+                "Please select a PDF document."
+            );
+
+            return;
+        }
+
+        const file =
+            fileInput.files[0];
+
+
+        /*
+         * Check PDF format.
+         */
+        if (
+            file.type !== "application/pdf" &&
+            !file.name.toLowerCase().endsWith(".pdf")
+        ) {
+
+            event.preventDefault();
+
+            alert(
+                "Only PDF documents are allowed."
+            );
+
+            return;
+        }
+
+
+        /*
+         * Check maximum file size.
+         */
+        const maxSize =
+            25 * 1024 * 1024;
+
+        if (file.size > maxSize) {
+
+            event.preventDefault();
+
+            alert(
+                "The PDF file must not exceed 25 MB."
+            );
+
+            return;
+        }
+
+
+        /*
+         * Prevent double submission.
+         */
+        button.disabled = true;
+
+        button.textContent =
+            "Processing PDF...";
+
+    }
+);
+
+</script>
+
+{% endblock %}

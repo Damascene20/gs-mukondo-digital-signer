@@ -1,0 +1,219 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>Two-Factor Authentication</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-family:
+        "Segoe UI",
+        Arial,
+        sans-serif;
+
+    background:
+        linear-gradient(
+            135deg,
+            #102a43,
+            #173f5f,
+            #0b7285
+        );
+}
+
+.card {
+    width: 100%;
+    max-width: 430px;
+    margin: 20px;
+    padding: 38px;
+
+    background: white;
+    border-radius: 24px;
+
+    box-shadow:
+        0 25px 70px rgba(0,0,0,.25);
+
+    text-align: center;
+}
+
+.icon {
+    width: 72px;
+    height: 72px;
+
+    margin: auto auto 20px;
+
+    border-radius: 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #eaf4ff;
+
+    font-size: 32px;
+}
+
+h1 {
+    margin: 0;
+    color: #102a43;
+}
+
+.description {
+    color: #718096;
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 10px 0 25px;
+}
+
+.alert {
+    padding: 12px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    font-size: 13px;
+}
+
+.alert-danger {
+    background: #fdecec;
+    color: #a61b1b;
+}
+
+input {
+    width: 100%;
+    padding: 17px;
+
+    border: 1px solid #d9e0e8;
+    border-radius: 12px;
+
+    text-align: center;
+
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: 8px;
+
+    outline: none;
+}
+
+input:focus {
+    border-color: #173f5f;
+
+    box-shadow:
+        0 0 0 3px rgba(23,63,95,.1);
+}
+
+button {
+    width: 100%;
+
+    margin-top: 18px;
+
+    padding: 14px;
+
+    border: 0;
+    border-radius: 11px;
+
+    background: #173f5f;
+    color: white;
+
+    font-size: 14px;
+    font-weight: 750;
+
+    cursor: pointer;
+}
+
+.back {
+    display: block;
+    margin-top: 18px;
+
+    color: #667085;
+    font-size: 13px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="card">
+
+    <div class="icon">
+        🔐
+    </div>
+
+    <h1>Verify Identity</h1>
+
+    <p class="description">
+        Open Google Authenticator and enter
+        the current 6-digit verification code.
+    </p>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+
+        {% for category, message in messages %}
+
+            <div class="alert alert-{{ category }}">
+                {{ message }}
+            </div>
+
+        {% endfor %}
+
+    {% endwith %}
+
+    <form method="POST"
+          action="{{ url_for('verify_2fa') }}">
+
+        <input
+            type="text"
+            name="otp_code"
+            inputmode="numeric"
+            autocomplete="one-time-code"
+            maxlength="6"
+            pattern="[0-9]{6}"
+            placeholder="000000"
+            required
+            autofocus
+        >
+
+        <button type="submit">
+            Verify Code
+        </button>
+
+    </form>
+
+    <a class="back"
+       href="{{ url_for('login') }}">
+        ← Back to login
+    </a>
+
+</div>
+
+<script>
+const input =
+    document.querySelector('input[name="otp_code"]');
+
+input.addEventListener("input", function () {
+
+    this.value =
+        this.value
+        .replace(/\D/g, "")
+        .slice(0, 6);
+
+});
+</script>
+
+</body>
+</html>

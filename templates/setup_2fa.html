@@ -1,0 +1,283 @@
+
+{% extends "base.html" %}
+
+{% block title %}
+Set Up 2FA - {{ application_name }}
+{% endblock %}
+
+{% block page_title %}
+Google Authenticator
+{% endblock %}
+
+{% block content %}
+
+<style>
+    .twofa-page {
+        max-width: 520px;
+        margin: 30px auto;
+    }
+
+    .twofa-card {
+        background: #fff;
+        border: 1px solid #e6eaf0;
+        border-radius: 20px;
+        padding: 28px;
+        box-shadow: 0 12px 35px rgba(16, 42, 67, .08);
+        text-align: center;
+    }
+
+    .twofa-icon {
+        width: 52px;
+        height: 52px;
+        margin: 0 auto 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 15px;
+        background: #eaf4ff;
+        font-size: 24px;
+    }
+
+    .twofa-card h2 {
+        margin: 0;
+        color: #102a43;
+        font-size: 21px;
+    }
+
+    .twofa-subtitle {
+        margin: 7px auto 20px;
+        color: #718096;
+        font-size: 13px;
+        line-height: 1.5;
+    }
+
+    .qr-box {
+        display: inline-flex;
+        padding: 14px;
+        background: #f7f9fc;
+        border: 1px solid #e5e7eb;
+        border-radius: 16px;
+    }
+
+    .qr-box img {
+        width: 190px;
+        height: 190px;
+        display: block;
+        border-radius: 8px;
+    }
+
+    .manual-key {
+        margin-top: 16px;
+        padding: 12px;
+        background: #f1f7ff;
+        border-radius: 11px;
+        text-align: left;
+    }
+
+    .manual-key label {
+        display: block;
+        margin-bottom: 5px;
+        color: #475467;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+    }
+
+    .manual-key code {
+        display: block;
+        color: #173f5f;
+        font-size: 12px;
+        font-weight: 700;
+        word-break: break-all;
+    }
+
+    .verify-form {
+        margin-top: 20px;
+        text-align: left;
+    }
+
+    .verify-form label {
+        display: block;
+        margin-bottom: 7px;
+        color: #344054;
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    .otp-input {
+        width: 100%;
+        padding: 13px;
+        border: 1px solid #d9dee8;
+        border-radius: 11px;
+        outline: none;
+        text-align: center;
+        font-size: 23px;
+        font-weight: 800;
+        letter-spacing: 7px;
+        box-sizing: border-box;
+    }
+
+    .otp-input:focus {
+        border-color: #173f5f;
+        box-shadow: 0 0 0 3px rgba(23, 63, 95, .10);
+    }
+
+    .twofa-actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 15px;
+    }
+
+    .twofa-actions button,
+    .twofa-actions a {
+        flex: 1;
+        padding: 12px;
+        border-radius: 10px;
+        text-align: center;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 700;
+        cursor: pointer;
+        box-sizing: border-box;
+    }
+
+    .enable-btn {
+        border: 0;
+        background: #173f5f;
+        color: #fff;
+    }
+
+    .cancel-btn {
+        border: 1px solid #d9dee8;
+        background: #fff;
+        color: #475467;
+    }
+
+    .twofa-note {
+        margin-top: 16px;
+        color: #98a2b3;
+        font-size: 11px;
+        line-height: 1.5;
+    }
+
+    @media (max-width: 560px) {
+        .twofa-page {
+            margin: 15px auto;
+        }
+
+        .twofa-card {
+            padding: 20px;
+        }
+
+        .qr-box img {
+            width: 170px;
+            height: 170px;
+        }
+
+        .twofa-actions {
+            flex-direction: column;
+        }
+    }
+</style>
+
+
+<div class="twofa-page">
+
+    <div class="twofa-card">
+
+        <div class="twofa-icon">🔐</div>
+
+        <h2>Enable Two-Factor Authentication</h2>
+
+        <p class="twofa-subtitle">
+            Scan the QR code with Google Authenticator,
+            then enter the 6-digit verification code.
+        </p>
+
+
+        <!-- QR CODE -->
+
+        <div class="qr-box">
+            <img
+                src="data:image/png;base64,{{ qr_code }}"
+                alt="Google Authenticator QR Code"
+            >
+        </div>
+
+
+        <!-- MANUAL KEY -->
+
+        <div class="manual-key">
+
+            <label>Manual Setup Key</label>
+
+            <code>{{ secret }}</code>
+
+        </div>
+
+
+        <!-- VERIFICATION -->
+
+        <form method="POST" class="verify-form">
+
+            <label for="otp_code">
+                Verification Code
+            </label>
+
+            <input
+                id="otp_code"
+                class="otp-input"
+                type="text"
+                name="otp_code"
+                inputmode="numeric"
+                autocomplete="one-time-code"
+                maxlength="6"
+                pattern="[0-9]{6}"
+                placeholder="000000"
+                required
+                autofocus
+            >
+
+
+            <div class="twofa-actions">
+
+                <button
+                    type="submit"
+                    class="enable-btn"
+                >
+                    ✓ Enable 2FA
+                </button>
+
+                <a
+                    href="{{ url_for('settings') }}"
+                    class="cancel-btn"
+                >
+                    Cancel
+                </a>
+
+            </div>
+
+        </form>
+
+
+        <div class="twofa-note">
+            Your account will require Google Authenticator
+            verification on future logins.
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+    const otp = document.getElementById("otp_code");
+
+    otp.addEventListener("input", function () {
+        this.value = this.value
+            .replace(/\D/g, "")
+            .slice(0, 6);
+    });
+</script>
+
+{% endblock %}

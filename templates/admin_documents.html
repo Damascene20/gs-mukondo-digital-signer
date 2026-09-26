@@ -1,0 +1,137 @@
+
+{% extends "base.html" %}
+
+{% block title %}
+Document History - {{ application_name }}
+{% endblock %}
+
+{% block page_title %}
+Document History
+{% endblock %}
+
+{% block content %}
+
+<div class="card">
+
+    <div style="margin-bottom:20px;">
+
+        <h2>📁 All Signed Documents</h2>
+
+        <p style="color:#718096;margin-top:5px;">
+            Administrator document history.
+        </p>
+
+    </div>
+
+    {% if documents %}
+
+    <div class="table-wrapper">
+
+        <table>
+
+            <thead>
+
+            <tr>
+                <th>Document</th>
+                <th>Document ID</th>
+                <th>Signature ID</th>
+                <th>User</th>
+                <th>Signed By</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+
+            </thead>
+
+            <tbody>
+
+            {% for document in documents %}
+
+            <tr>
+
+                <td>
+                    {{ document["original_filename"] }}
+                </td>
+
+                <td>
+                    <code>
+                        {{ document["document_id"] }}
+                    </code>
+                </td>
+
+                <td>
+                    <code>
+                        {{ document["signature_id"] }}
+                    </code>
+                </td>
+
+                <td>
+                    {{ document["username"] or "Unknown" }}
+                </td>
+
+                <td>
+                    {{ document["signed_by"] }}
+                </td>
+
+                <td>
+                    {{ document["signed_at"] }}
+                </td>
+
+                <td>
+
+                    <span class="badge badge-success">
+                        {{ document["status"]|capitalize }}
+                    </span>
+
+                </td>
+
+                <td>
+
+                    <div class="actions">
+
+                        <a
+                            class="btn btn-light"
+                            href="{{ url_for(
+                                'result',
+                                filename=document['signed_filename']
+                            ) }}"
+                        >
+                            View
+                        </a>
+
+                        <a
+                            class="btn btn-primary"
+                            href="{{ url_for(
+                                'download',
+                                filename=document['signed_filename']
+                            ) }}"
+                        >
+                            Download
+                        </a>
+
+                    </div>
+
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    {% else %}
+
+    <div class="empty">
+        No signed documents found.
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

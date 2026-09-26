@@ -1,0 +1,145 @@
+
+{% extends "base.html" %}
+
+{% block title %}
+Signed Document - {{ application_name }}
+{% endblock %}
+
+{% block page_title %}
+Signed Document
+{% endblock %}
+
+{% block content %}
+
+<div class="card">
+
+    <div style="
+        text-align:center;
+        padding:20px 10px 30px;
+    ">
+
+        <div style="font-size:55px;">
+            ✓
+        </div>
+
+        <h2>
+            Document Signed Successfully
+        </h2>
+
+        <p style="
+            color:#718096;
+            margin-top:8px;
+        ">
+            Your digitally signed PDF is ready.
+        </p>
+
+    </div>
+
+    {% if document %}
+
+    <div class="grid grid-3"
+         style="margin-bottom:25px;">
+
+        <div class="stat">
+
+            <div class="stat-label">
+                Document ID
+            </div>
+
+            <div style="
+                font-weight:700;
+                margin-top:7px;
+                word-break:break-word;
+            ">
+                {{ document["document_id"] }}
+            </div>
+
+        </div>
+
+        <div class="stat">
+
+            <div class="stat-label">
+                Signature ID
+            </div>
+
+            <div style="
+                font-weight:700;
+                margin-top:7px;
+            ">
+                {{ document["signature_id"] }}
+            </div>
+
+        </div>
+
+        <div class="stat">
+
+            <div class="stat-label">
+                Signed At
+            </div>
+
+            <div style="
+                font-weight:700;
+                margin-top:7px;
+            ">
+                {{ document["signed_at"] }}
+            </div>
+
+        </div>
+
+    </div>
+
+    {% endif %}
+
+    <div style="
+        padding:18px;
+        background:#f8fafc;
+        border-radius:12px;
+        margin-bottom:20px;
+    ">
+
+        <strong>
+            {{ filename }}
+        </strong>
+
+    </div>
+
+    <div class="actions">
+
+        <a class="btn btn-primary"
+           href="{{ url_for(
+               'preview',
+               filename=filename
+           ) }}"
+           target="_blank">
+            👁 Preview PDF
+        </a>
+
+        <a class="btn btn-success"
+           href="{{ url_for(
+               'download',
+               filename=filename
+           ) }}">
+            ⬇ Download PDF
+        </a>
+
+        <a class="btn btn-light"
+           href="{{ url_for('dashboard') }}">
+            ← Dashboard
+        </a>
+
+    </div>
+
+    <div style="
+        margin-top:25px;
+        padding:15px;
+        border-radius:10px;
+        background:#e8f7ef;
+        color:#176b4d;
+        font-size:13px;
+    ">
+        ✓ Signature and stamp were applied to the document.
+    </div>
+
+</div>
+
+{% endblock %}

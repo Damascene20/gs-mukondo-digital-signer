@@ -1,0 +1,707 @@
+
+{% extends "base.html" %}
+
+{% block title %}
+Database Cleanup - {{ application_name }}
+{% endblock %}
+
+{% block page_title %}
+Database Cleanup
+{% endblock %}
+
+{% block content %}
+
+<div class="cleanup-page">
+
+    <!-- =====================================================
+         FLASH MESSAGES
+         ===================================================== -->
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+
+            <div class="flash-container">
+
+                {% for category, message in messages %}
+
+                    <div class="flash-message {{ category }}">
+
+                        <div class="flash-icon">
+
+                            {% if category == "success" %}
+                                ✓
+                            {% elif category == "error" %}
+                                ✕
+                            {% elif category == "warning" %}
+                                ⚠
+                            {% else %}
+                                ℹ
+                            {% endif %}
+
+                        </div>
+
+                        <div class="flash-content">
+                            {{ message }}
+                        </div>
+
+                        <button
+                            type="button"
+                            class="flash-close"
+                            onclick="this.parentElement.remove()"
+                            aria-label="Close message"
+                        >
+                            ×
+                        </button>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% endif %}
+    {% endwith %}
+
+
+    <!-- =====================================================
+         HEADER
+         ===================================================== -->
+
+    <div class="cleanup-header">
+
+        <div class="cleanup-header-text">
+
+            <div class="page-badge">
+                ADMINISTRATOR
+            </div>
+
+            <h1>
+                Database Cleanup
+            </h1>
+
+            <p>
+                Manage and permanently remove old document
+                records and signing history.
+            </p>
+
+        </div>
+
+        <div class="danger-icon">
+            ⚠
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         WARNING
+         ===================================================== -->
+
+    <div class="cleanup-warning">
+
+        <div class="warning-symbol">
+            ⚠
+        </div>
+
+        <div class="warning-content">
+
+            <h3>
+                Permanent Data Removal
+            </h3>
+
+            <p>
+                The cleanup operation permanently removes
+                document records, audit logs, uploaded PDFs,
+                and signed PDFs.
+            </p>
+
+            <strong>
+                This action cannot be undone.
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         DATABASE STATISTICS
+         ===================================================== -->
+
+    <div class="cleanup-stats">
+
+        <!-- DOCUMENTS -->
+
+        <div class="cleanup-stat-card">
+
+            <div class="stat-icon documents-icon">
+                📄
+            </div>
+
+            <div class="stat-information">
+
+                <span>
+                    Documents
+                </span>
+
+                <strong>
+                    {{ document_count }}
+                </strong>
+
+                <small>
+                    Database records
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <!-- AUDIT LOGS -->
+
+        <div class="cleanup-stat-card">
+
+            <div class="stat-icon logs-icon">
+                📋
+            </div>
+
+            <div class="stat-information">
+
+                <span>
+                    Audit Logs
+                </span>
+
+                <strong>
+                    {{ audit_count }}
+                </strong>
+
+                <small>
+                    Activity records
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <!-- USERS -->
+
+        <div class="cleanup-stat-card">
+
+            <div class="stat-icon users-icon">
+                👤
+            </div>
+
+            <div class="stat-information">
+
+                <span>
+                    Users
+                </span>
+
+                <strong>
+                    {{ user_count }}
+                </strong>
+
+                <small>
+                    Accounts preserved
+                </small>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         DATA THAT WILL BE DELETED
+         ===================================================== -->
+
+    <div class="cleanup-card">
+
+        <div class="card-heading">
+
+            <div>
+                <h2>
+                    Data that will be deleted
+                </h2>
+
+                <p>
+                    The following data will be permanently removed.
+                </p>
+            </div>
+
+            <span class="danger-label">
+                DELETE
+            </span>
+
+        </div>
+
+
+        <div class="cleanup-list">
+
+            <!-- DOCUMENT RECORDS -->
+
+            <div class="cleanup-item delete-item">
+
+                <div class="item-status">
+                    ✕
+                </div>
+
+                <div class="item-information">
+
+                    <strong>
+                        Document records
+                    </strong>
+
+                    <p>
+                        All records stored in the
+                        <code>documents</code> database table.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- AUDIT LOGS -->
+
+            <div class="cleanup-item delete-item">
+
+                <div class="item-status">
+                    ✕
+                </div>
+
+                <div class="item-information">
+
+                    <strong>
+                        Audit logs
+                    </strong>
+
+                    <p>
+                        Document signing and system activity history.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- UPLOADED FILES -->
+
+            <div class="cleanup-item delete-item">
+
+                <div class="item-status">
+                    ✕
+                </div>
+
+                <div class="item-information">
+
+                    <strong>
+                        Uploaded PDFs
+                    </strong>
+
+                    <p>
+                        PDF files stored inside the
+                        <code>uploads</code> folder.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- SIGNED FILES -->
+
+            <div class="cleanup-item delete-item">
+
+                <div class="item-status">
+                    ✕
+                </div>
+
+                <div class="item-information">
+
+                    <strong>
+                        Signed PDFs
+                    </strong>
+
+                    <p>
+                        PDF files stored inside the
+                        <code>signed_documents</code> folder.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         DATA THAT WILL BE PRESERVED
+         ===================================================== -->
+
+    <div class="cleanup-card protected-card">
+
+        <div class="card-heading">
+
+            <div>
+                <h2>
+                    Data that will be preserved
+                </h2>
+
+                <p>
+                    The following information will not be affected.
+                </p>
+            </div>
+
+            <span class="safe-label">
+                PRESERVED
+            </span>
+
+        </div>
+
+
+        <div class="cleanup-list">
+
+            <!-- USERS -->
+
+            <div class="cleanup-item protected-item">
+
+                <div class="item-status">
+                    ✓
+                </div>
+
+                <div class="item-information">
+
+                    <strong>
+                        User accounts
+                    </strong>
+
+                    <p>
+                        Administrator and other user accounts remain.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- PASSWORDS -->
+
+            <div class="cleanup-item protected-item">
+
+                <div class="item-status">
+                    ✓
+                </div>
+
+                <div class="item-information">
+
+                    <strong>
+                        Passwords
+                    </strong>
+
+                    <p>
+                        Existing password credentials remain unchanged.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- TWO FACTOR -->
+
+            <div class="cleanup-item protected-item">
+
+                <div class="item-status">
+                    ✓
+                </div>
+
+                <div class="item-information">
+
+                    <strong>
+                        Two-factor authentication
+                    </strong>
+
+                    <p>
+                        Google Authenticator configuration remains.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- SIGNATURE -->
+
+            <div class="cleanup-item protected-item">
+
+                <div class="item-status">
+                    ✓
+                </div>
+
+                <div class="item-information">
+
+                    <strong>
+                        Stored signature
+                    </strong>
+
+                    <p>
+                        The stored signature image will not be deleted.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- STAMP -->
+
+            <div class="cleanup-item protected-item">
+
+                <div class="item-status">
+                    ✓
+                </div>
+
+                <div class="item-information">
+
+                    <strong>
+                        Stored stamp
+                    </strong>
+
+                    <p>
+                        The stored stamp image will not be deleted.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         CONFIRMATION
+         ===================================================== -->
+
+    <div class="cleanup-card danger-card">
+
+        <div class="confirmation-header">
+
+            <div class="confirmation-icon">
+                🗑
+            </div>
+
+            <div>
+
+                <h2>
+                    Confirm Database Cleanup
+                </h2>
+
+                <p>
+                    This is the final step before permanent deletion.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="confirmation-instruction">
+
+            <p>
+                To confirm that you understand this action,
+                type the following text exactly:
+            </p>
+
+            <div class="confirmation-code">
+                DELETE ALL
+            </div>
+
+        </div>
+
+
+        <!-- FORM -->
+
+        <form
+            method="POST"
+            action="{{ url_for('admin_cleanup') }}"
+            id="cleanupForm"
+            autocomplete="off"
+        >
+
+            <div class="form-group">
+
+                <label for="confirmation">
+                    Confirmation text
+                </label>
+
+                <input
+                    type="text"
+                    id="confirmation"
+                    name="confirmation"
+                    placeholder="Type DELETE ALL"
+                    autocomplete="off"
+                    spellcheck="false"
+                    required
+                >
+
+                <small>
+                    Enter <strong>DELETE ALL</strong> to enable cleanup.
+                </small>
+
+            </div>
+
+
+            <!-- BUTTONS -->
+
+            <div class="cleanup-actions">
+
+                <a
+                    href="{{ url_for('dashboard') }}"
+                    class="btn btn-secondary"
+                >
+                    ← Cancel
+                </a>
+
+                <button
+                    type="submit"
+                    class="btn btn-danger"
+                    id="cleanupButton"
+                    disabled
+                >
+                    🗑 Clean Database
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     JAVASCRIPT
+     ========================================================= -->
+
+<script>
+
+(function () {
+
+    const form =
+        document.getElementById("cleanupForm");
+
+    const input =
+        document.getElementById("confirmation");
+
+    const button =
+        document.getElementById("cleanupButton");
+
+
+    if (!form || !input || !button) {
+        return;
+    }
+
+
+    /*
+     * Enable button only when the administrator
+     * enters the correct confirmation text.
+     */
+
+    input.addEventListener("input", function () {
+
+        const value =
+            input.value
+                .trim()
+                .toUpperCase();
+
+        button.disabled =
+            value !== "DELETE ALL";
+
+    });
+
+
+    /*
+     * Final confirmation.
+     */
+
+    form.addEventListener("submit", function (event) {
+
+        const value =
+            input.value
+                .trim()
+                .toUpperCase();
+
+
+        if (value !== "DELETE ALL") {
+
+            event.preventDefault();
+
+            alert(
+                'Please type "DELETE ALL" to continue.'
+            );
+
+            input.focus();
+
+            return;
+        }
+
+
+        const confirmed =
+            window.confirm(
+                "PERMANENT DATABASE CLEANUP\n\n" +
+
+                "The following will be deleted:\n\n" +
+
+                "• All document records\n" +
+                "• All audit logs\n" +
+                "• Uploaded PDF files\n" +
+                "• Signed PDF files\n\n" +
+
+                "The following will remain:\n\n" +
+
+                "• User accounts\n" +
+                "• Passwords\n" +
+                "• 2FA settings\n" +
+                "• Stored signature\n" +
+                "• Stored stamp\n\n" +
+
+                "This action cannot be undone.\n\n" +
+
+                "Do you want to continue?"
+            );
+
+
+        if (!confirmed) {
+
+            event.preventDefault();
+
+            return;
+        }
+
+
+        /*
+         * Prevent double submission.
+         */
+
+        button.disabled = true;
+
+        button.innerHTML =
+            '<span class="loading-spinner"></span> Cleaning...';
+
+        input.disabled = true;
+
+    });
+
+})();
+
+</script>
+
+{% endblock %}

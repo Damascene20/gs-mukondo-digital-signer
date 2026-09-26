@@ -1,0 +1,1794 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <meta name="theme-color"
+          content="#102a43">
+
+    <title>
+        {% block title %}
+            {{ application_name }}
+        {% endblock %}
+    </title>
+
+    <style>
+
+        /* =====================================================
+           RESET
+        ===================================================== */
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --primary: #173f5f;
+            --primary-dark: #102a43;
+            --primary-light: #eaf4ff;
+
+            --success: #16805c;
+            --success-light: #e8f7ef;
+
+            --danger: #c53030;
+            --danger-light: #fdecec;
+
+            --warning: #946200;
+            --warning-light: #fff4d6;
+
+            --info: #185c9c;
+            --info-light: #eaf4ff;
+
+            --text: #172033;
+            --muted: #718096;
+
+            --border: #e5eaf1;
+            --background: #f4f7fb;
+            --white: #ffffff;
+
+            --sidebar-width: 255px;
+        }
+
+
+        /* =====================================================
+           GLOBAL
+        ===================================================== */
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family:
+                Inter,
+                "Segoe UI",
+                Arial,
+                sans-serif;
+
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.5;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        button,
+        input,
+        select,
+        textarea {
+            font-family: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+
+        /* =====================================================
+           APPLICATION
+        ===================================================== */
+
+        .app {
+            min-height: 100vh;
+            display: flex;
+        }
+
+
+        /* =====================================================
+           SIDEBAR
+        ===================================================== */
+
+        .sidebar {
+            width: var(--sidebar-width);
+
+            background:
+                linear-gradient(
+                    180deg,
+                    #102a43 0%,
+                    #173f5f 55%,
+                    #0d314c 100%
+                );
+
+            color: white;
+
+            position: fixed;
+
+            left: 0;
+            top: 0;
+            bottom: 0;
+
+            padding: 20px 14px;
+
+            z-index: 1000;
+
+            overflow-y: auto;
+
+            box-shadow:
+                5px 0 25px rgba(15, 23, 42, .08);
+        }
+
+
+        /* =====================================================
+           BRAND
+        ===================================================== */
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            padding:
+                8px 10px 22px;
+
+            border-bottom:
+                1px solid rgba(255, 255, 255, .12);
+        }
+
+        .brand-icon {
+            width: 45px;
+            height: 45px;
+
+            flex-shrink: 0;
+
+            border-radius: 13px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255, 255, 255, .22),
+                    rgba(255, 255, 255, .08)
+                );
+
+            border:
+                1px solid rgba(255, 255, 255, .15);
+
+            font-size: 22px;
+            font-weight: 800;
+
+            box-shadow:
+                0 8px 20px rgba(0, 0, 0, .12);
+        }
+
+        .brand-text {
+            min-width: 0;
+        }
+
+        .brand-text strong {
+            display: block;
+
+            font-size: 15px;
+            font-weight: 800;
+            letter-spacing: .2px;
+        }
+
+        .brand-text span {
+            display: block;
+
+            margin-top: 2px;
+
+            font-size: 11px;
+
+            color:
+                rgba(255, 255, 255, .68);
+        }
+
+
+        /* =====================================================
+           NAVIGATION
+        ===================================================== */
+
+        .nav {
+            margin-top: 22px;
+        }
+
+        .nav-title {
+            font-size: 10px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1.5px;
+
+            color:
+                rgba(255, 255, 255, .48);
+
+            padding:
+                0 12px 8px;
+        }
+
+        .nav-link {
+            position: relative;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 11px;
+
+            min-height: 44px;
+
+            padding:
+                11px 12px;
+
+            margin:
+                4px 0;
+
+            border-radius: 11px;
+
+            color:
+                rgba(255, 255, 255, .78);
+
+            font-size: 13px;
+
+            font-weight: 600;
+
+            transition:
+                background .2s ease,
+                color .2s ease,
+                transform .2s ease;
+        }
+
+        .nav-link:hover {
+            background:
+                rgba(255, 255, 255, .10);
+
+            color: white;
+
+            transform:
+                translateX(2px);
+        }
+
+        .nav-link.active {
+            background:
+                linear-gradient(
+                    90deg,
+                    rgba(255, 255, 255, .17),
+                    rgba(255, 255, 255, .08)
+                );
+
+            color: white;
+
+            box-shadow:
+                inset 3px 0 0 #ffffff;
+        }
+
+        .nav-icon {
+            width: 22px;
+
+            flex-shrink: 0;
+
+            text-align: center;
+
+            font-size: 16px;
+        }
+
+        .nav-label {
+            flex: 1;
+        }
+
+
+        /* =====================================================
+           MAIN
+        ===================================================== */
+
+        .main {
+            margin-left: var(--sidebar-width);
+
+            width:
+                calc(100% - var(--sidebar-width));
+
+            min-height: 100vh;
+
+            display: flex;
+
+            flex-direction: column;
+        }
+
+
+        /* =====================================================
+           TOP BAR
+        ===================================================== */
+
+        .topbar {
+            min-height: 72px;
+
+            background:
+                rgba(255, 255, 255, .96);
+
+            border-bottom:
+                1px solid var(--border);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            padding:
+                0 30px;
+
+            position: sticky;
+
+            top: 0;
+
+            z-index: 900;
+
+            backdrop-filter:
+                blur(12px);
+        }
+
+        .page-title {
+            font-size: 21px;
+
+            font-weight: 800;
+
+            color:
+                var(--text);
+        }
+
+
+        /* =====================================================
+           USER AREA
+        ===================================================== */
+
+        .user-area {
+            display: flex;
+
+            align-items: center;
+
+            gap: 11px;
+        }
+
+        .user-info {
+            text-align: right;
+        }
+
+        .user-info strong {
+            display: block;
+
+            font-size: 13px;
+
+            font-weight: 750;
+
+            color:
+                var(--text);
+        }
+
+        .user-info span {
+            display: block;
+
+            margin-top: 1px;
+
+            font-size: 11px;
+
+            color:
+                var(--muted);
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+
+            border-radius: 50%;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #173f5f,
+                    #245f87
+                );
+
+            color: white;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            font-size: 14px;
+
+            font-weight: 800;
+
+            border:
+                2px solid #e8eef5;
+
+            box-shadow:
+                0 5px 15px rgba(23, 63, 95, .15);
+        }
+
+
+        /* =====================================================
+           CONTENT
+        ===================================================== */
+
+        .content {
+            width: 100%;
+
+            max-width: 1500px;
+
+            padding: 30px;
+
+            flex: 1;
+        }
+
+
+        /* =====================================================
+           CARDS
+        ===================================================== */
+
+        .card {
+            background: white;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 16px;
+
+            padding: 22px;
+
+            box-shadow:
+                0 8px 30px rgba(15, 23, 42, .05);
+        }
+
+
+        /* =====================================================
+           GRID
+        ===================================================== */
+
+        .grid {
+            display: grid;
+            gap: 20px;
+        }
+
+        .grid-2 {
+            grid-template-columns:
+                repeat(2, minmax(0, 1fr));
+        }
+
+        .grid-3 {
+            grid-template-columns:
+                repeat(3, minmax(0, 1fr));
+        }
+
+        .grid-4 {
+            grid-template-columns:
+                repeat(4, minmax(0, 1fr));
+        }
+
+
+        /* =====================================================
+           STATISTICS
+        ===================================================== */
+
+        .stat {
+            padding: 22px;
+
+            border-radius: 15px;
+
+            background: white;
+
+            border:
+                1px solid var(--border);
+
+            box-shadow:
+                0 6px 20px rgba(15, 23, 42, .035);
+
+            transition:
+                transform .2s ease,
+                box-shadow .2s ease;
+        }
+
+        .stat:hover {
+            transform:
+                translateY(-2px);
+
+            box-shadow:
+                0 12px 28px rgba(15, 23, 42, .07);
+        }
+
+        .stat-label {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .stat-value {
+            font-size: 30px;
+
+            font-weight: 800;
+
+            margin-top: 8px;
+
+            color:
+                var(--text);
+        }
+
+
+        /* =====================================================
+           BUTTONS
+        ===================================================== */
+
+        .btn {
+            border: 0;
+
+            cursor: pointer;
+
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            gap: 8px;
+
+            padding:
+                11px 17px;
+
+            border-radius: 10px;
+
+            font-weight: 700;
+
+            font-size: 13px;
+
+            transition:
+                transform .18s ease,
+                box-shadow .18s ease,
+                opacity .18s ease;
+        }
+
+        .btn:hover {
+            transform:
+                translateY(-1px);
+
+            box-shadow:
+                0 6px 16px rgba(15, 23, 42, .10);
+        }
+
+        .btn:active {
+            transform:
+                translateY(0);
+        }
+
+        .btn-primary {
+            background:
+                var(--primary);
+
+            color: white;
+        }
+
+        .btn-success {
+            background:
+                var(--success);
+
+            color: white;
+        }
+
+        .btn-danger {
+            background:
+                var(--danger);
+
+            color: white;
+        }
+
+        .btn-light {
+            background:
+                #edf2f7;
+
+            color:
+                #263445;
+        }
+
+        .btn:disabled {
+            cursor: not-allowed;
+
+            opacity: .55;
+
+            transform: none;
+
+            box-shadow: none;
+        }
+
+
+        /* =====================================================
+           FORMS
+        ===================================================== */
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+
+            margin-bottom: 7px;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            color:
+                #344054;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+
+            padding:
+                12px 13px;
+
+            border:
+                1px solid #d9e0e8;
+
+            border-radius: 10px;
+
+            outline: none;
+
+            background: white;
+
+            color:
+                var(--text);
+
+            font-size: 14px;
+
+            transition:
+                border .2s ease,
+                box-shadow .2s ease;
+        }
+
+        textarea {
+            min-height: 110px;
+            resize: vertical;
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+            color:
+                #98a2b3;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color:
+                var(--primary);
+
+            box-shadow:
+                0 0 0 3px
+                rgba(23, 63, 95, .10);
+        }
+
+
+        /* =====================================================
+           TABLES
+        ===================================================== */
+
+        .table-wrapper {
+            width: 100%;
+
+            overflow-x: auto;
+
+            border-radius: 12px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding:
+                14px 12px;
+
+            text-align: left;
+
+            border-bottom:
+                1px solid #edf0f4;
+
+            font-size: 13px;
+
+            vertical-align: middle;
+        }
+
+        th {
+            color:
+                #667085;
+
+            font-size: 11px;
+
+            text-transform: uppercase;
+
+            letter-spacing: .6px;
+
+            background:
+                #fafbfd;
+        }
+
+        tbody tr {
+            transition:
+                background .15s ease;
+        }
+
+        tbody tr:hover {
+            background:
+                #fafcff;
+        }
+
+
+        /* =====================================================
+           BADGES
+        ===================================================== */
+
+        .badge {
+            display: inline-flex;
+
+            align-items: center;
+
+            padding:
+                5px 9px;
+
+            border-radius: 999px;
+
+            font-size: 11px;
+
+            font-weight: 750;
+
+            white-space: nowrap;
+        }
+
+        .badge-success {
+            background:
+                #e6f7ef;
+
+            color:
+                #13795b;
+        }
+
+        .badge-danger {
+            background:
+                #fdecec;
+
+            color:
+                #b42318;
+        }
+
+        .badge-warning {
+            background:
+                #fff4d6;
+
+            color:
+                #946200;
+        }
+
+        .badge-info {
+            background:
+                #eaf4ff;
+
+            color:
+                #185c9c;
+        }
+
+
+        /* =====================================================
+           FLASH MESSAGES
+        ===================================================== */
+
+        .flash-container {
+            margin-bottom: 20px;
+        }
+
+        .alert {
+            padding:
+                13px 16px;
+
+            margin-bottom: 12px;
+
+            border-radius: 11px;
+
+            font-size: 13px;
+
+            font-weight: 600;
+
+            border:
+                1px solid transparent;
+
+            animation:
+                alertSlide .25s ease;
+        }
+
+        .alert-success {
+            background:
+                var(--success-light);
+
+            color:
+                #176b4d;
+
+            border-color:
+                #bde8d4;
+        }
+
+        .alert-danger,
+        .alert-error {
+            background:
+                var(--danger-light);
+
+            color:
+                #a61b1b;
+
+            border-color:
+                #f2c5c5;
+        }
+
+        .alert-warning {
+            background:
+                var(--warning-light);
+
+            color:
+                #815b00;
+
+            border-color:
+                #f2dfa5;
+        }
+
+        .alert-info {
+            background:
+                var(--info-light);
+
+            color:
+                #185c9c;
+
+            border-color:
+                #c8e2fa;
+        }
+
+        @keyframes alertSlide {
+
+            from {
+                opacity: 0;
+                transform:
+                    translateY(-5px);
+            }
+
+            to {
+                opacity: 1;
+                transform:
+                    translateY(0);
+            }
+        }
+
+
+        /* =====================================================
+           EMPTY STATE
+        ===================================================== */
+
+        .empty {
+            padding:
+                50px 20px;
+
+            text-align: center;
+
+            color:
+                #7b8794;
+        }
+
+        .empty-icon {
+            font-size: 42px;
+
+            margin-bottom: 10px;
+
+            opacity: .65;
+        }
+
+
+        /* =====================================================
+           ACTIONS
+        ===================================================== */
+
+        .actions {
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 8px;
+        }
+
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        .footer {
+            padding:
+                20px 30px;
+
+            color:
+                #8a94a6;
+
+            font-size: 12px;
+
+            border-top:
+                1px solid var(--border);
+
+            background:
+                rgba(255, 255, 255, .55);
+        }
+
+
+        /* =====================================================
+           SIDEBAR SCROLLBAR
+        ===================================================== */
+
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar::-webkit-scrollbar-track {
+            background:
+                transparent;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background:
+                rgba(255, 255, 255, .18);
+
+            border-radius: 20px;
+        }
+
+
+        /* =====================================================
+           MOBILE MENU
+        ===================================================== */
+
+        .mobile-menu-btn {
+            display: none;
+
+            width: 40px;
+            height: 40px;
+
+            border: 0;
+
+            border-radius: 10px;
+
+            background:
+                #edf2f7;
+
+            color:
+                var(--primary);
+
+            font-size: 20px;
+        }
+
+        .sidebar-overlay {
+            display: none;
+        }
+
+
+        /* =====================================================
+           TABLET
+        ===================================================== */
+
+        @media (max-width: 1100px) {
+
+            :root {
+                --sidebar-width: 225px;
+            }
+
+            .grid-4 {
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+            }
+
+            .content {
+                padding: 24px;
+            }
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media (max-width: 760px) {
+
+            .sidebar {
+                width: 270px;
+
+                transform:
+                    translateX(-100%);
+
+                transition:
+                    transform .25s ease;
+
+                box-shadow:
+                    10px 0 30px rgba(0, 0, 0, .15);
+            }
+
+            .sidebar.mobile-open {
+                transform:
+                    translateX(0);
+            }
+
+            .sidebar-overlay {
+                position: fixed;
+
+                inset: 0;
+
+                background:
+                    rgba(15, 23, 42, .45);
+
+                z-index: 999;
+
+                display: none;
+
+                backdrop-filter:
+                    blur(2px);
+            }
+
+            .sidebar-overlay.show {
+                display: block;
+            }
+
+            .main {
+                margin-left: 0;
+                width: 100%;
+            }
+
+            .topbar {
+                min-height: 64px;
+
+                padding:
+                    0 16px;
+
+                gap: 12px;
+            }
+
+            .mobile-menu-btn {
+                display: inline-flex;
+
+                align-items: center;
+
+                justify-content: center;
+            }
+
+            .page-title {
+                font-size: 18px;
+                flex: 1;
+            }
+
+            .user-info {
+                display: none;
+            }
+
+            .content {
+                padding:
+                    18px 15px;
+            }
+
+            .grid-2,
+            .grid-3,
+            .grid-4 {
+                grid-template-columns:
+                    1fr;
+            }
+
+            .card {
+                padding: 18px;
+                border-radius: 13px;
+            }
+
+            .footer {
+                padding:
+                    18px 15px;
+
+                text-align: center;
+            }
+        }
+
+
+        /* =====================================================
+           SMALL MOBILE
+        ===================================================== */
+
+        @media (max-width: 450px) {
+
+            .avatar {
+                width: 36px;
+                height: 36px;
+            }
+
+            .page-title {
+                font-size: 16px;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .actions .btn {
+                flex:
+                    1 1 100%;
+            }
+
+            th,
+            td {
+                padding:
+                    11px 9px;
+
+                font-size: 12px;
+            }
+        }
+
+    </style>
+
+    {% block head %}{% endblock %}
+
+</head>
+
+
+<body>
+
+
+<div class="app">
+
+
+    {% if session.get("logged_in") %}
+
+
+    <!-- =====================================================
+         MOBILE SIDEBAR OVERLAY
+    ====================================================== -->
+
+    <div
+        class="sidebar-overlay"
+        id="sidebarOverlay"
+        onclick="closeSidebar()">
+    </div>
+
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    <aside
+        class="sidebar"
+        id="sidebar">
+
+
+        <!-- BRAND -->
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                ✓
+            </div>
+
+            <div class="brand-text">
+
+                <strong>
+                    GS MUKONDO
+                </strong>
+
+                <span>
+                    Digital Signer
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- NAVIGATION -->
+
+        <nav class="nav">
+
+
+            <!-- MAIN -->
+
+            <div class="nav-title">
+                Main
+            </div>
+
+
+            <a
+                href="{{ url_for('dashboard') }}"
+                class="nav-link">
+
+                <span class="nav-icon">
+                    📊
+                </span>
+
+                <span class="nav-label">
+                    Dashboard
+                </span>
+
+            </a>
+
+
+            <a
+                href="{{ url_for('upload') }}"
+                class="nav-link">
+
+                <span class="nav-icon">
+                    📄
+                </span>
+
+                <span class="nav-label">
+                    Sign Document
+                </span>
+
+            </a>
+
+
+            <a
+                href="{{ url_for('settings') }}"
+                class="nav-link">
+
+                <span class="nav-icon">
+                    ⚙️
+                </span>
+
+                <span class="nav-label">
+                    Settings
+                </span>
+
+            </a>
+
+
+            <a
+                href="{{ url_for('change_password') }}"
+                class="nav-link">
+
+                <span class="nav-icon">
+                    🔐
+                </span>
+
+                <span class="nav-label">
+                    Change Password
+                </span>
+
+            </a>
+
+
+            <!-- =================================================
+                 ADMINISTRATION
+            ================================================== -->
+
+            {% if session.get("role") == "admin" %}
+
+            <div
+                class="nav-title"
+                style="margin-top:22px;">
+
+                Administration
+
+            </div>
+
+
+            <!-- USERS -->
+
+            <a
+                href="{{ url_for('admin_users') }}"
+                class="nav-link">
+
+                <span class="nav-icon">
+                    👥
+                </span>
+
+                <span class="nav-label">
+                    Users
+                </span>
+
+            </a>
+
+
+            <!-- DATABASE CLEANUP
+
+                 IMPORTANT:
+                 This uses a direct URL instead of
+                 url_for('cleanup').
+
+                 This prevents BuildError if the cleanup
+                 endpoint is not currently registered.
+            -->
+
+            <a
+                href="/admin/cleanup"
+                class="nav-link">
+
+                <span class="nav-icon">
+                    🗑️
+                </span>
+
+                <span class="nav-label">
+                    Database Cleanup
+                </span>
+
+            </a>
+
+
+            <!-- DOCUMENTS -->
+
+            <a
+                href="{{ url_for('admin_documents') }}"
+                class="nav-link">
+
+                <span class="nav-icon">
+                    📁
+                </span>
+
+                <span class="nav-label">
+                    Documents
+                </span>
+
+            </a>
+
+
+            <!-- AUDIT LOGS -->
+
+            <a
+                href="{{ url_for('audit_logs') }}"
+                class="nav-link">
+
+                <span class="nav-icon">
+                    📝
+                </span>
+
+                <span class="nav-label">
+                    Audit Logs
+                </span>
+
+            </a>
+
+            {% endif %}
+
+
+            <!-- =================================================
+                 ACCOUNT
+            ================================================== -->
+
+            <div
+                class="nav-title"
+                style="margin-top:22px;">
+
+                Account
+
+            </div>
+
+
+            <!-- LOGOUT -->
+
+            <a
+                href="{{ url_for('logout') }}"
+                class="nav-link">
+
+                <span class="nav-icon">
+                    🚪
+                </span>
+
+                <span class="nav-label">
+                    Logout
+                </span>
+
+            </a>
+
+
+        </nav>
+
+    </aside>
+
+    {% endif %}
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+    ====================================================== -->
+
+    <main class="main">
+
+
+        {% if session.get("logged_in") %}
+
+
+        <!-- =================================================
+             TOP BAR
+        ================================================== -->
+
+        <header class="topbar">
+
+
+            <!-- MOBILE MENU -->
+
+            <button
+                type="button"
+                class="mobile-menu-btn"
+                onclick="toggleSidebar()"
+                aria-label="Open menu">
+
+                ☰
+
+            </button>
+
+
+            <!-- PAGE TITLE -->
+
+            <div class="page-title">
+
+                {% block page_title %}
+
+                    {{ application_name }}
+
+                {% endblock %}
+
+            </div>
+
+
+            <!-- USER -->
+
+            <div class="user-area">
+
+
+                <div class="user-info">
+
+                    <strong>
+                        {{ session.get("username", "User") }}
+                    </strong>
+
+                    <span>
+                        {{ session.get("role", "user")|capitalize }}
+                    </span>
+
+                </div>
+
+
+                <div class="avatar">
+
+                    {{ session.get("username", "U")[:1]|upper }}
+
+                </div>
+
+
+            </div>
+
+
+        </header>
+
+        {% endif %}
+
+
+        <!-- =====================================================
+             PAGE CONTENT
+        ====================================================== -->
+
+        <section class="content">
+
+
+            <!-- FLASH MESSAGES -->
+
+            {% with messages =
+                get_flashed_messages(
+                    with_categories=true
+                )
+            %}
+
+                {% if messages %}
+
+                <div class="flash-container">
+
+                    {% for category, message in messages %}
+
+                    <div
+                        class="alert alert-{{ category }}"
+                        role="alert">
+
+                        {{ message }}
+
+                    </div>
+
+                    {% endfor %}
+
+                </div>
+
+                {% endif %}
+
+            {% endwith %}
+
+
+            <!-- CHILD TEMPLATE CONTENT -->
+
+            {% block content %}
+
+            {% endblock %}
+
+
+        </section>
+
+
+        <!-- =====================================================
+             FOOTER
+        ====================================================== -->
+
+        <footer class="footer">
+
+            {{ application_name }}
+
+            · v{{ application_version }}
+
+            · © {{ current_year }}
+
+            · GS MUKONDO
+
+        </footer>
+
+
+    </main>
+
+</div>
+
+
+<!-- =============================================================
+     JAVASCRIPT
+============================================================== -->
+
+<script>
+
+
+    /* =========================================================
+       OPEN/CLOSE MOBILE SIDEBAR
+    ========================================================= */
+
+    function toggleSidebar() {
+
+        const sidebar =
+            document.getElementById("sidebar");
+
+        const overlay =
+            document.getElementById("sidebarOverlay");
+
+
+        if (!sidebar || !overlay) {
+            return;
+        }
+
+
+        sidebar.classList.toggle(
+            "mobile-open"
+        );
+
+        overlay.classList.toggle(
+            "show"
+        );
+
+    }
+
+
+    function closeSidebar() {
+
+        const sidebar =
+            document.getElementById("sidebar");
+
+        const overlay =
+            document.getElementById("sidebarOverlay");
+
+
+        if (!sidebar || !overlay) {
+            return;
+        }
+
+
+        sidebar.classList.remove(
+            "mobile-open"
+        );
+
+        overlay.classList.remove(
+            "show"
+        );
+
+    }
+
+
+    /* =========================================================
+       CLOSE SIDEBAR AFTER NAVIGATION
+    ========================================================= */
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function () {
+
+            const links =
+                document.querySelectorAll(
+                    ".sidebar .nav-link"
+                );
+
+
+            links.forEach(
+                function (link) {
+
+                    link.addEventListener(
+                        "click",
+                        function () {
+
+                            if (
+                                window.innerWidth <= 760
+                            ) {
+
+                                closeSidebar();
+
+                            }
+
+                        }
+                    );
+
+                }
+            );
+
+        }
+    );
+
+
+    /* =========================================================
+       ACTIVE NAVIGATION
+    ========================================================= */
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function () {
+
+            const currentPath =
+                window.location.pathname;
+
+
+            const links =
+                document.querySelectorAll(
+                    ".sidebar .nav-link"
+                );
+
+
+            links.forEach(
+                function (link) {
+
+                    try {
+
+                        const linkUrl =
+                            new URL(
+                                link.href,
+                                window.location.origin
+                            );
+
+
+                        if (
+                            linkUrl.pathname ===
+                            currentPath
+                        ) {
+
+                            link.classList.add(
+                                "active"
+                            );
+
+                        }
+
+                    }
+                    catch (error) {
+
+                        console.warn(
+                            "Navigation error:",
+                            error
+                        );
+
+                    }
+
+                }
+            );
+
+        }
+    );
+
+
+    /* =========================================================
+       CLOSE SIDEBAR WHEN WINDOW BECOMES LARGE
+    ========================================================= */
+
+    window.addEventListener(
+        "resize",
+        function () {
+
+            if (window.innerWidth > 760) {
+
+                closeSidebar();
+
+            }
+
+        }
+    );
+
+
+    /* =========================================================
+       AUTO-HIDE FLASH MESSAGES
+    ========================================================= */
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function () {
+
+            const alerts =
+                document.querySelectorAll(
+                    ".alert"
+                );
+
+            alerts.forEach(
+                function (alert) {
+
+                    setTimeout(
+                        function () {
+
+                            alert.style.opacity = "0";
+
+                            alert.style.transform =
+                                "translateY(-5px)";
+
+                            alert.style.transition =
+                                "opacity .3s ease, transform .3s ease";
+
+                            setTimeout(
+                                function () {
+
+                                    alert.remove();
+
+                                },
+                                300
+                            );
+
+                        },
+                        5000
+                    );
+
+                }
+            );
+
+        }
+    );
+
+</script>
+
+
+{% block scripts %}
+
+{% endblock %}
+
+
+</body>
+
+</html>
