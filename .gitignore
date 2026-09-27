@@ -1,39 +1,80 @@
-
+# =========================================================
 # Python
+# =========================================================
+
 __pycache__/
 *.py[cod]
 *.pyo
 *.pyd
 
+# =========================================================
 # Virtual environment
+# =========================================================
+
 venv/
 .venv/
 env/
 
+# =========================================================
 # Environment variables / secrets
+# =========================================================
+
 .env
 .env.*
 
-# SQLite database
+# =========================================================
+# SQLite databases
+# =========================================================
+
+# Ignore SQLite databases by default
 *.db
 *.sqlite
 *.sqlite3
 
+# IMPORTANT:
+# Keep the application's database in Git for the current
+# Render deployment.
+!storage/
+!storage/app_data.db
+
+# =========================================================
 # Uploaded documents
+# =========================================================
+
 uploads/*
 signed_documents/*
 
-# Stored signing assets
-storage/signature.png
-storage/stamp.png
+# Keep the folders in Git
+!uploads/.gitkeep
+!signed_documents/.gitkeep
 
+# =========================================================
+# Stored signing assets
+# =========================================================
+
+# Keep the actual signature and stamp files
+# if you want Render to receive them.
+!storage/signature.png
+!storage/stamp.png
+
+# Other generated signing assets can remain ignored if needed.
+
+# =========================================================
 # Generated files
+# =========================================================
+
 *.log
 
+# =========================================================
 # IDE
+# =========================================================
+
 .vscode/
 .idea/
 
+# =========================================================
 # Windows
+# =========================================================
+
 Thumbs.db
 Desktop.ini
