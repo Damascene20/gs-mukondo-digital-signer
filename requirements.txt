@@ -8,7 +8,7 @@ blinker==1.9.0
 gunicorn==23.0.0
 
 PyMuPDF==1.26.5
-Pillow==10.0.0
+Pillow>=11.0.0,<13.0.0
 
 Flask-Bcrypt==1.0.1
 Flask-Login==0.6.2
@@ -18,5 +18,5 @@ python-dotenv==1.0.0
 qrcode==7.4.2
 pyotp==2.9.0
 
-setuptools>=70.0.0
-wheel>=0.44.0
+setuptools>=75.0.0
+wheel>=0.45.0
