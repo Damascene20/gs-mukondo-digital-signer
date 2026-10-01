@@ -1,4 +1,4 @@
-
+```jinja
 {% extends "base.html" %}
 
 {% block title %}
@@ -11,33 +11,1032 @@ Sign Document
 
 {% block content %}
 
-<!--
-    MAIN CONTENT
-    Original width is preserved at 750px.
-    The container is aligned to the LEFT.
--->
-<div style="
-    width:100%;
-    max-width:750px;
-    margin-left:0;
-    margin-right:auto;
-">
+<style>
 
-    <!-- SIGN DOCUMENT CARD -->
-    <div class="card">
+/* =========================================================
+   GS MUKONDO DIGITAL SIGNER
+   SIGN DOCUMENT
+   MODERN GRADIENT SYSTEM
+   NO BLUE
+========================================================= */
 
-        <h2 style="margin-top:0;">
-            📄 Sign a PDF Document
-        </h2>
+.sign-page {
+    width: 100%;
+    max-width: 900px;
+    margin: 0;
+    padding-bottom: 25px;
+}
 
-        <p style="
-            color:#718096;
-            margin:8px 0 25px;
-            line-height:1.6;
-        ">
-            Upload a PDF and the system will apply the
-            configured signature and stamp.
+
+/* =========================================================
+   ANIMATIONS
+========================================================= */
+
+@keyframes gradientFlow {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    25% {
+        background-position: 50% 100%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    75% {
+        background-position: 50% 0%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+
+@keyframes gradientMove {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+
+@keyframes softGlow {
+
+    0%,
+    100% {
+        box-shadow:
+            0 8px 25px rgba(16,185,129,.08);
+    }
+
+    50% {
+        box-shadow:
+            0 12px 35px rgba(124,58,237,.16);
+    }
+}
+
+
+@keyframes iconFloat {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+
+@keyframes pulse {
+
+    0% {
+        transform: scale(.9);
+        opacity: .6;
+    }
+
+    50% {
+        transform: scale(1.15);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(.9);
+        opacity: .6;
+    }
+}
+
+
+@keyframes fadeUp {
+
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* =========================================================
+   PAGE HEADER
+========================================================= */
+
+.sign-header {
+
+    position: relative;
+    overflow: hidden;
+
+    margin-bottom: 15px;
+    padding: 16px 18px;
+
+    border-radius: 14px;
+
+    background:
+        linear-gradient(
+            120deg,
+            #047857,
+            #059669,
+            #0d9488,
+            #7c3aed,
+            #a855f7,
+            #d97706,
+            #047857
+        );
+
+    background-size: 400% 400%;
+
+    animation:
+        gradientFlow 10s ease infinite;
+
+    color: #ffffff;
+
+    box-shadow:
+        0 8px 25px rgba(16,185,129,.16);
+}
+
+
+.sign-header::before {
+
+    content: "";
+
+    position: absolute;
+
+    width: 180px;
+    height: 180px;
+
+    right: -70px;
+    top: -100px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255,255,255,.10);
+
+    animation:
+        iconFloat 5s ease-in-out infinite;
+}
+
+
+.sign-header::after {
+
+    content: "";
+
+    position: absolute;
+
+    width: 100px;
+    height: 100px;
+
+    right: 80px;
+    bottom: -70px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255,255,255,.06);
+}
+
+
+.sign-header-content {
+
+    position: relative;
+    z-index: 2;
+}
+
+
+.sign-header h2 {
+
+    margin: 0;
+
+    font-size: 19px;
+    font-weight: 750;
+
+    letter-spacing: -.2px;
+}
+
+
+.sign-header p {
+
+    margin: 5px 0 0;
+
+    font-size: 12px;
+
+    line-height: 1.5;
+
+    opacity: .90;
+}
+
+
+/* =========================================================
+   MAIN CARD
+========================================================= */
+
+.sign-card {
+
+    animation:
+        fadeUp .45s ease both,
+        softGlow 5s ease-in-out infinite;
+}
+
+
+.sign-card h3 {
+
+    margin: 0;
+
+    font-size: 16px;
+
+    color: #172033;
+}
+
+
+.sign-description {
+
+    color: #64748b;
+
+    font-size: 12px;
+
+    margin:
+        6px 0 17px;
+
+    line-height: 1.55;
+}
+
+
+/* =========================================================
+   UPLOAD AREA
+========================================================= */
+
+.upload-zone {
+
+    position: relative;
+
+    overflow: hidden;
+
+    border:
+        2px dashed #a7f3d0;
+
+    border-radius: 14px;
+
+    padding: 31px 18px;
+
+    text-align: center;
+
+    background:
+        linear-gradient(
+            135deg,
+            #f0fdf4,
+            #ecfdf5,
+            #f5f3ff,
+            #fffbeb
+        );
+
+    background-size: 300% 300%;
+
+    animation:
+        gradientMove 12s ease infinite;
+
+    transition:
+        border-color .25s ease,
+        transform .25s ease,
+        box-shadow .25s ease;
+}
+
+
+.upload-zone:hover {
+
+    border-color: #10b981;
+
+    transform:
+        translateY(-2px);
+
+    box-shadow:
+        0 10px 30px
+        rgba(16,185,129,.12);
+}
+
+
+.upload-zone.drag-active {
+
+    border-color: #7c3aed;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ecfdf5,
+            #f0fdfa,
+            #f5f3ff
+        );
+
+    box-shadow:
+        0 0 0 4px
+        rgba(124,58,237,.08);
+
+    transform:
+        scale(1.005);
+}
+
+
+/* =========================================================
+   UPLOAD ICON
+========================================================= */
+
+.upload-icon {
+
+    position: relative;
+
+    z-index: 2;
+
+    width: 55px;
+    height: 55px;
+
+    margin:
+        0 auto 10px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    border-radius: 15px;
+
+    font-size: 27px;
+
+    color: #ffffff;
+
+    background:
+        linear-gradient(
+            135deg,
+            #059669,
+            #0d9488,
+            #7c3aed,
+            #d97706
+        );
+
+    background-size: 300% 300%;
+
+    animation:
+        gradientFlow 7s ease infinite,
+        iconFloat 3s ease-in-out infinite;
+
+    box-shadow:
+        0 8px 22px
+        rgba(16,185,129,.18);
+}
+
+
+.upload-zone h4 {
+
+    position: relative;
+
+    z-index: 2;
+
+    margin:
+        5px 0 5px;
+
+    font-size: 15px;
+
+    color: #1e293b;
+}
+
+
+.upload-zone p {
+
+    position: relative;
+
+    z-index: 2;
+
+    margin:
+        0 0 15px;
+
+    color: #64748b;
+
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   FILE INPUT
+========================================================= */
+
+.file-input-wrapper {
+
+    position: relative;
+
+    z-index: 3;
+
+    display: inline-block;
+}
+
+
+.file-input-wrapper input[type="file"] {
+
+    max-width: 100%;
+
+    font-size: 12px;
+
+    color: #475569;
+
+    cursor: pointer;
+}
+
+
+.file-input-wrapper
+input[type="file"]::file-selector-button {
+
+    margin-right: 8px;
+
+    padding:
+        8px 13px;
+
+    border: 0;
+
+    border-radius: 8px;
+
+    color: #ffffff;
+
+    font-weight: 650;
+
+    font-size: 11px;
+
+    cursor: pointer;
+
+    background:
+        linear-gradient(
+            120deg,
+            #047857,
+            #059669,
+            #7c3aed,
+            #d97706
+        );
+
+    background-size: 300% 300%;
+
+    animation:
+        gradientMove 6s ease infinite;
+
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease;
+}
+
+
+.file-input-wrapper
+input[type="file"]::file-selector-button:hover {
+
+    transform:
+        translateY(-1px);
+
+    box-shadow:
+        0 6px 16px
+        rgba(16,185,129,.20);
+}
+
+
+/* =========================================================
+   SELECTED FILE
+========================================================= */
+
+.selected-file {
+
+    position: relative;
+
+    z-index: 2;
+
+    display: none;
+
+    align-items: center;
+
+    gap: 8px;
+
+    margin:
+        13px auto 0;
+
+    padding:
+        8px 11px;
+
+    max-width: 90%;
+
+    width: fit-content;
+
+    border:
+        1px solid #a7f3d0;
+
+    border-radius: 9px;
+
+    background:
+        linear-gradient(
+            100deg,
+            #ecfdf5,
+            #f0fdfa,
+            #f5f3ff
+        );
+
+    color: #047857;
+
+    font-size: 11px;
+
+    font-weight: 650;
+
+    word-break: break-word;
+
+    animation:
+        fadeUp .3s ease both;
+}
+
+
+.selected-file.visible {
+
+    display: flex;
+}
+
+
+.selected-file-icon {
+
+    width: 25px;
+    height: 25px;
+
+    flex-shrink: 0;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    border-radius: 7px;
+
+    color: #ffffff;
+
+    background:
+        linear-gradient(
+            135deg,
+            #059669,
+            #7c3aed
+        );
+}
+
+
+/* =========================================================
+   ACTION BUTTONS
+========================================================= */
+
+.sign-actions {
+
+    display:
+        flex;
+
+    justify-content:
+        flex-end;
+
+    align-items:
+        center;
+
+    gap: 8px;
+
+    margin-top: 17px;
+
+    flex-wrap: wrap;
+}
+
+
+.sign-actions .btn {
+
+    min-height: 36px;
+
+    padding:
+        8px 15px;
+
+    border-radius: 8px;
+
+    font-size: 12px;
+
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease;
+}
+
+
+.sign-actions .btn:hover {
+
+    transform:
+        translateY(-1px);
+}
+
+
+/* =========================================================
+   MAIN SIGN BUTTON
+========================================================= */
+
+.sign-submit {
+
+    border: none !important;
+
+    color: #ffffff !important;
+
+    background:
+        linear-gradient(
+            120deg,
+            #047857,
+            #059669,
+            #0d9488,
+            #7c3aed,
+            #a855f7,
+            #d97706,
+            #047857
+        ) !important;
+
+    background-size:
+        400% 400% !important;
+
+    animation:
+        gradientFlow 8s ease infinite;
+
+    box-shadow:
+        0 7px 20px
+        rgba(16,185,129,.20);
+}
+
+
+.sign-submit:hover {
+
+    box-shadow:
+        0 10px 28px
+        rgba(124,58,237,.25);
+}
+
+
+.sign-submit:disabled {
+
+    opacity: .70;
+
+    cursor:
+        not-allowed;
+
+    transform:
+        none;
+}
+
+
+/* =========================================================
+   INFORMATION CARDS
+========================================================= */
+
+.sign-info-grid {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 12px;
+
+    margin-top: 14px;
+}
+
+
+.info-card {
+
+    position: relative;
+
+    overflow: hidden;
+
+    animation:
+        fadeUp .45s ease both;
+}
+
+
+.info-card:nth-child(2) {
+
+    animation-delay:
+        .10s;
+}
+
+
+.info-card::before {
+
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+    right: 0;
+
+    height: 3px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #047857,
+            #10b981,
+            #0d9488,
+            #7c3aed,
+            #d97706,
+            #047857
+        );
+
+    background-size:
+        400% 100%;
+
+    animation:
+        gradientMove 7s linear infinite;
+}
+
+
+.info-top {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap: 9px;
+
+    margin-bottom: 7px;
+}
+
+
+.info-icon {
+
+    width: 32px;
+    height: 32px;
+
+    flex-shrink: 0;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    border-radius: 9px;
+
+    color: #ffffff;
+
+    font-size: 16px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #059669,
+            #0d9488,
+            #7c3aed
+        );
+
+    background-size:
+        200% 200%;
+
+    animation:
+        gradientMove 5s ease infinite;
+}
+
+
+.info-title {
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    color: #1e293b;
+}
+
+
+.info-card p {
+
+    margin: 0;
+
+    color: #64748b;
+
+    font-size: 11px;
+
+    line-height: 1.55;
+}
+
+
+/* =========================================================
+   SECURITY NOTE
+========================================================= */
+
+.sign-note {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap: 9px;
+
+    margin-top: 12px;
+
+    padding:
+        9px 11px;
+
+    border-radius: 9px;
+
+    background:
+        linear-gradient(
+            100deg,
+            #f0fdf4,
+            #f8fafc,
+            #faf5ff
+        );
+
+    border:
+        1px solid #e2e8f0;
+
+    color: #64748b;
+
+    font-size: 10px;
+
+    line-height: 1.45;
+}
+
+
+.note-dot {
+
+    width: 7px;
+    height: 7px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    background:
+        linear-gradient(
+            135deg,
+            #10b981,
+            #7c3aed
+        );
+
+    animation:
+        pulse 1.8s ease-in-out infinite;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 700px) {
+
+    .sign-page {
+        max-width: 100%;
+    }
+
+    .sign-header {
+        padding: 14px;
+    }
+
+    .sign-header h2 {
+        font-size: 17px;
+    }
+
+    .upload-zone {
+        padding: 27px 14px;
+    }
+
+    .sign-info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .sign-actions {
+        justify-content: stretch;
+    }
+
+    .sign-actions .btn {
+        flex: 1;
+        text-align: center;
+    }
+}
+
+
+@media (max-width: 450px) {
+
+    .upload-icon {
+        width: 48px;
+        height: 48px;
+        font-size: 23px;
+    }
+
+    .upload-zone h4 {
+        font-size: 14px;
+    }
+
+    .file-input-wrapper input[type="file"] {
+        width: 100%;
+    }
+
+    .sign-actions {
+        flex-direction:
+            column-reverse;
+    }
+
+    .sign-actions .btn {
+        width: 100%;
+    }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .sign-header,
+    .upload-icon,
+    .file-input-wrapper input[type="file"]::file-selector-button,
+    .sign-submit,
+    .info-card::before,
+    .info-icon,
+    .note-dot {
+
+        animation: none !important;
+    }
+
+    .sign-card,
+    .info-card,
+    .selected-file {
+
+        animation: none !important;
+    }
+
+    .upload-zone:hover,
+    .sign-actions .btn:hover {
+
+        transform: none;
+    }
+}
+
+</style>
+
+
+<div class="sign-page">
+
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <div class="sign-header">
+
+        <div class="sign-header-content">
+
+            <h2>
+                📄 Sign a PDF Document
+            </h2>
+
+            <p>
+                Upload a PDF document and securely apply the
+                configured digital signature information and official stamp.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         MAIN SIGNING CARD
+    ====================================================== -->
+
+    <div class="card sign-card">
+
+        <h3>
+            Select Document
+        </h3>
+
+        <p class="sign-description">
+            Choose a PDF file from your computer or drag and drop
+            it into the upload area.
         </p>
+
 
         <form
             method="POST"
@@ -45,87 +1044,79 @@ Sign Document
             id="uploadForm"
         >
 
-            <!-- PDF UPLOAD AREA -->
+
+            <!-- =================================================
+                 UPLOAD AREA
+            ================================================== -->
+
             <div
                 id="uploadArea"
-                style="
-                    border:2px dashed #cbd5e1;
-                    border-radius:16px;
-                    padding:50px 25px;
-                    text-align:center;
-                    background:#f8fafc;
-                    transition:all 0.25s ease;
-                "
+                class="upload-zone"
             >
 
-                <div style="
-                    font-size:48px;
-                    line-height:1;
-                    margin-bottom:10px;
-                ">
+                <div class="upload-icon">
                     📄
                 </div>
 
-                <h3 style="
-                    margin:12px 0 7px;
-                    color:#1a202c;
-                ">
-                    Choose PDF Document
-                </h3>
 
-                <p style="
-                    color:#718096;
-                    font-size:13px;
-                    margin-bottom:20px;
-                ">
+                <h4>
+                    Choose PDF Document
+                </h4>
+
+
+                <p>
                     PDF files only · Maximum 25 MB
                 </p>
 
-                <!-- FILE INPUT -->
-                <input
-                    type="file"
-                    name="document"
-                    id="document"
-                    accept=".pdf,application/pdf"
-                    required
-                    style="
-                        max-width:100%;
-                    "
-                >
+
+                <div class="file-input-wrapper">
+
+                    <input
+                        type="file"
+                        name="document"
+                        id="document"
+                        accept=".pdf,application/pdf"
+                        required
+                    >
+
+                </div>
+
 
                 <!-- SELECTED FILE -->
+
                 <div
                     id="fileName"
-                    style="
-                        margin-top:15px;
-                        color:#173f5f;
-                        font-weight:600;
-                        word-break:break-word;
-                    "
+                    class="selected-file"
                 >
+
+                    <span class="selected-file-icon">
+                        ✓
+                    </span>
+
+                    <span id="fileNameText"></span>
+
                 </div>
 
             </div>
 
-            <!-- ACTION BUTTONS -->
-            <div style="
-                display:flex;
-                gap:10px;
-                margin-top:25px;
-                justify-content:flex-end;
-                flex-wrap:wrap;
-            ">
+
+            <!-- =================================================
+                 ACTION BUTTONS
+            ================================================== -->
+
+            <div class="sign-actions">
 
                 <a
                     class="btn btn-light"
                     href="{{ url_for('dashboard') }}"
                 >
-                    Cancel
+                    ← Cancel
                 </a>
+
 
                 <button
                     type="submit"
-                    class="btn btn-primary"
+                    class="btn btn-primary sign-submit"
                     id="submitButton"
                 >
                     ✓ Sign PDF
@@ -138,54 +1129,80 @@ Sign Document
     </div>
 
 
-    <!-- SIGNATURE & STAMP INFORMATION -->
-    <div
-        class="grid grid-2"
-        style="margin-top:20px;"
-    >
+    <!-- =====================================================
+         INFORMATION
+    ====================================================== -->
 
-        <!-- SIGNATURE -->
-        <div class="card">
+    <div class="sign-info-grid">
 
-            <strong>
-                ✍️ Signature
-            </strong>
 
-            <p style="
-                color:#718096;
-                font-size:12px;
-                margin-top:7px;
-                line-height:1.6;
-            ">
-                The stored signature will be applied
-                to each page of the uploaded PDF.
+        <!-- DIGITAL SIGNATURE -->
+
+        <div class="card info-card">
+
+            <div class="info-top">
+
+                <div class="info-icon">
+                    ✍️
+                </div>
+
+                <div class="info-title">
+                    Digital Signature
+                </div>
+
+            </div>
+
+            <p>
+                The system adds the configured digital signature
+                information to the document during the signing process.
             </p>
 
         </div>
 
 
-        <!-- STAMP -->
-        <div class="card">
+        <!-- OFFICIAL STAMP -->
 
-            <strong>
-                🔴 Stamp
-            </strong>
+        <div class="card info-card">
 
-            <p style="
-                color:#718096;
-                font-size:12px;
-                margin-top:7px;
-                line-height:1.6;
-            ">
-                The stored stamp will be applied
-                to each page of the uploaded PDF.
+            <div class="info-top">
+
+                <div class="info-icon">
+                    🔴
+                </div>
+
+                <div class="info-title">
+                    Official Stamp
+                </div>
+
+            </div>
+
+            <p>
+                The stored official stamp is automatically applied
+                to the signed PDF according to the system configuration.
             </p>
 
         </div>
 
     </div>
 
+
+    <!-- =====================================================
+         SECURITY NOTE
+    ====================================================== -->
+
+    <div class="sign-note">
+
+        <span class="note-dot"></span>
+
+        <span>
+            Your document is securely processed by the signing system
+            and recorded in the document history after successful signing.
+        </span>
+
+    </div>
+
 </div>
+
 
 {% endblock %}
 
@@ -194,11 +1211,18 @@ Sign Document
 
 <script>
 
+/* =========================================================
+   ELEMENTS
+========================================================= */
+
 const fileInput =
     document.getElementById("document");
 
 const fileName =
     document.getElementById("fileName");
+
+const fileNameText =
+    document.getElementById("fileNameText");
 
 const form =
     document.getElementById("uploadForm");
@@ -210,50 +1234,134 @@ const uploadArea =
     document.getElementById("uploadArea");
 
 
-/*
-|--------------------------------------------------------------------------
-| FILE SELECTION
-|--------------------------------------------------------------------------
-*/
+/* =========================================================
+   SETTINGS
+========================================================= */
+
+const MAX_FILE_SIZE =
+    25 * 1024 * 1024;
+
+
+/* =========================================================
+   CHECK PDF
+========================================================= */
+
+function isPDF(file) {
+
+    return (
+        file.type === "application/pdf" ||
+        file.name
+            .toLowerCase()
+            .endsWith(".pdf")
+    );
+
+}
+
+
+/* =========================================================
+   SHOW SELECTED FILE
+========================================================= */
+
+function showSelectedFile(file) {
+
+    fileNameText.textContent =
+        file.name;
+
+    fileName.classList.add(
+        "visible"
+    );
+
+    uploadArea.classList.add(
+        "drag-active"
+    );
+
+    setTimeout(function() {
+
+        uploadArea.classList.remove(
+            "drag-active"
+        );
+
+    }, 500);
+
+}
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+function resetUploadArea() {
+
+    fileNameText.textContent = "";
+
+    fileName.classList.remove(
+        "visible"
+    );
+
+    uploadArea.classList.remove(
+        "drag-active"
+    );
+
+}
+
+
+/* =========================================================
+   FILE SELECTION
+========================================================= */
 
 fileInput.addEventListener(
     "change",
     function() {
 
-        if (this.files.length) {
+        if (!this.files.length) {
 
-            const file =
-                this.files[0];
+            resetUploadArea();
 
-            fileName.textContent =
-                "Selected: " + file.name;
-
-            uploadArea.style.borderColor =
-                "#173f5f";
-
-            uploadArea.style.background =
-                "#f1f5f9";
-
-        } else {
-
-            fileName.textContent = "";
-
-            uploadArea.style.borderColor =
-                "#cbd5e1";
-
-            uploadArea.style.background =
-                "#f8fafc";
+            return;
         }
+
+
+        const file =
+            this.files[0];
+
+
+        if (!isPDF(file)) {
+
+            alert(
+                "Please select a PDF document."
+            );
+
+            this.value = "";
+
+            resetUploadArea();
+
+            return;
+        }
+
+
+        if (file.size > MAX_FILE_SIZE) {
+
+            alert(
+                "The PDF file must not exceed 25 MB."
+            );
+
+            this.value = "";
+
+            resetUploadArea();
+
+            return;
+        }
+
+
+        showSelectedFile(file);
 
     }
 );
 
 
-/*
-|--------------------------------------------------------------------------
-| DRAG & DROP
-|--------------------------------------------------------------------------
-*/
+/* =========================================================
+   DRAG OVER
+========================================================= */
 
 uploadArea.addEventListener(
     "dragover",
@@ -261,29 +1369,42 @@ uploadArea.addEventListener(
 
         event.preventDefault();
 
-        uploadArea.style.borderColor =
-            "#173f5f";
-
-        uploadArea.style.background =
-            "#eef6ff";
+        uploadArea.classList.add(
+            "drag-active"
+        );
 
     }
 );
 
+
+/* =========================================================
+   DRAG LEAVE
+========================================================= */
 
 uploadArea.addEventListener(
     "dragleave",
-    function() {
+    function(event) {
 
-        uploadArea.style.borderColor =
-            "#cbd5e1";
+        if (
+            event.relatedTarget &&
+            uploadArea.contains(
+                event.relatedTarget
+            )
+        ) {
+            return;
+        }
 
-        uploadArea.style.background =
-            "#f8fafc";
+        uploadArea.classList.remove(
+            "drag-active"
+        );
 
     }
 );
 
+
+/* =========================================================
+   DROP
+========================================================= */
 
 uploadArea.addEventListener(
     "drop",
@@ -291,47 +1412,46 @@ uploadArea.addEventListener(
 
         event.preventDefault();
 
+        uploadArea.classList.remove(
+            "drag-active"
+        );
+
+
         const files =
             event.dataTransfer.files;
 
-        if (files.length) {
 
-            const file =
-                files[0];
+        if (!files.length) {
+            return;
+        }
 
-            /*
-             * Only allow PDF files.
-             */
-            if (
-                file.type !== "application/pdf" &&
-                !file.name.toLowerCase().endsWith(".pdf")
-            ) {
 
-                alert(
-                    "Please select a PDF document."
-                );
+        const file =
+            files[0];
 
-                return;
-            }
 
-            /*
-             * Maximum 25 MB.
-             */
-            const maxSize =
-                25 * 1024 * 1024;
+        if (!isPDF(file)) {
 
-            if (file.size > maxSize) {
+            alert(
+                "Please select a PDF document."
+            );
 
-                alert(
-                    "The PDF file must not exceed 25 MB."
-                );
+            return;
+        }
 
-                return;
-            }
 
-            /*
-             * Put dropped file into the input.
-             */
+        if (file.size > MAX_FILE_SIZE) {
+
+            alert(
+                "The PDF file must not exceed 25 MB."
+            );
+
+            return;
+        }
+
+
+        try {
+
             const dataTransfer =
                 new DataTransfer();
 
@@ -340,33 +1460,54 @@ uploadArea.addEventListener(
             fileInput.files =
                 dataTransfer.files;
 
-            fileName.textContent =
-                "Selected: " + file.name;
+        } catch (error) {
 
-            uploadArea.style.borderColor =
-                "#173f5f";
+            console.error(
+                "Unable to assign dropped file:",
+                error
+            );
 
-            uploadArea.style.background =
-                "#f1f5f9";
+            return;
         }
+
+
+        showSelectedFile(file);
 
     }
 );
 
 
-/*
-|--------------------------------------------------------------------------
-| FORM SUBMISSION
-|--------------------------------------------------------------------------
-*/
+/* =========================================================
+   CLICK UPLOAD AREA
+========================================================= */
+
+uploadArea.addEventListener(
+    "click",
+    function(event) {
+
+        if (
+            event.target === fileInput ||
+            event.target.closest(
+                ".file-input-wrapper"
+            )
+        ) {
+            return;
+        }
+
+        fileInput.click();
+
+    }
+);
+
+
+/* =========================================================
+   FORM SUBMISSION
+========================================================= */
 
 form.addEventListener(
     "submit",
     function(event) {
 
-        /*
-         * Check that a file exists.
-         */
         if (!fileInput.files.length) {
 
             event.preventDefault();
@@ -378,17 +1519,12 @@ form.addEventListener(
             return;
         }
 
+
         const file =
             fileInput.files[0];
 
 
-        /*
-         * Check PDF format.
-         */
-        if (
-            file.type !== "application/pdf" &&
-            !file.name.toLowerCase().endsWith(".pdf")
-        ) {
+        if (!isPDF(file)) {
 
             event.preventDefault();
 
@@ -400,13 +1536,7 @@ form.addEventListener(
         }
 
 
-        /*
-         * Check maximum file size.
-         */
-        const maxSize =
-            25 * 1024 * 1024;
-
-        if (file.size > maxSize) {
+        if (file.size > MAX_FILE_SIZE) {
 
             event.preventDefault();
 
@@ -418,13 +1548,16 @@ form.addEventListener(
         }
 
 
-        /*
-         * Prevent double submission.
-         */
+        /* Prevent double submission */
+
         button.disabled = true;
 
         button.textContent =
-            "Processing PDF...";
+            "⏳ Processing PDF...";
+
+
+        uploadArea.style.pointerEvents =
+            "none";
 
     }
 );
@@ -432,3 +1565,7 @@ form.addEventListener(
 </script>
 
 {% endblock %}
+```
+This gives you a **non-blue animated gradient system** throughout the page: **emerald + teal + purple + gold**, while keeping the interface compact and consistent with the other GS MUKONDO pages.
+
+If you want the whole application to have this exact palette, the same gradient system should also be applied to the **sidebar, Dashboard, Users, Document History, Settings, Login, and 2FA pages**.

@@ -1,4 +1,4 @@
-
+```html
 {% extends "base.html" %}
 
 {% block title %}
@@ -11,97 +11,750 @@ Create User
 
 {% block content %}
 
-<div style="max-width:600px;margin:auto;">
+<style>
+    .create-user-wrapper {
+        max-width: 760px;
+        margin: 20px auto 40px;
+    }
 
-<div class="card">
+    .user-card {
+        background: #ffffff;
+        border: 1px solid #e7edf5;
+        border-radius: 22px;
+        overflow: hidden;
+        box-shadow: 0 12px 35px rgba(15, 23, 42, 0.08);
+    }
 
-<h2>👤 Create New User</h2>
+    /* HEADER */
+    .user-card-header {
+        position: relative;
+        padding: 30px 32px;
+        background:
+            linear-gradient(
+                135deg,
+                #0f172a 0%,
+                #1e3a8a 55%,
+                #2563eb 100%
+            );
+        color: white;
+    }
 
-<p style="
-    color:#718096;
-    margin:8px 0 25px;
-">
-    Create a new account for the digital signing system.
-</p>
+    .header-content {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+    }
 
-<form method="POST">
+    .header-icon {
+        width: 58px;
+        height: 58px;
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 27px;
+        background: rgba(255, 255, 255, 0.14);
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        backdrop-filter: blur(8px);
+    }
 
-<div class="form-group">
+    .user-card-header h2 {
+        margin: 0;
+        font-size: 23px;
+        font-weight: 700;
+        letter-spacing: -0.3px;
+    }
 
-<label>
-    Username
-</label>
+    .user-card-header p {
+        margin: 6px 0 0;
+        color: rgba(255,255,255,0.78);
+        font-size: 14px;
+    }
 
-<input
-    type="text"
-    name="username"
-    minlength="3"
-    autocomplete="username"
-    required
-    placeholder="Enter username"
->
+    /* BODY */
+    .user-card-body {
+        padding: 32px;
+    }
+
+    .form-section {
+        margin-bottom: 25px;
+    }
+
+    .form-section-title {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 18px;
+        font-size: 14px;
+        font-weight: 700;
+        color: #334155;
+        text-transform: uppercase;
+        letter-spacing: 0.6px;
+    }
+
+    .form-group {
+        margin-bottom: 21px;
+    }
+
+    .form-label {
+        display: block;
+        margin-bottom: 8px;
+        color: #334155;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .input-wrapper {
+        position: relative;
+    }
+
+    .input-icon {
+        position: absolute;
+        left: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 17px;
+        opacity: 0.65;
+        pointer-events: none;
+    }
+
+    .modern-input,
+    .modern-select {
+        width: 100%;
+        box-sizing: border-box;
+        min-height: 50px;
+        border: 1px solid #dbe3ef;
+        border-radius: 12px;
+        background: #f8fafc;
+        color: #1e293b;
+        font-size: 15px;
+        padding: 0 15px 0 44px;
+        outline: none;
+        transition: all 0.2s ease;
+    }
+
+    .modern-select {
+        padding-left: 15px;
+        cursor: pointer;
+    }
+
+    .modern-input:hover,
+    .modern-select:hover {
+        border-color: #b8c5d8;
+        background: #ffffff;
+    }
+
+    .modern-input:focus,
+    .modern-select:focus {
+        border-color: #2563eb;
+        background: #ffffff;
+        box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.10);
+    }
+
+    .password-toggle {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        font-size: 17px;
+        padding: 5px;
+        opacity: 0.65;
+    }
+
+    .password-toggle:hover {
+        opacity: 1;
+    }
+
+    .password-input {
+        padding-right: 48px;
+    }
+
+    .field-help {
+        margin-top: 7px;
+        color: #64748b;
+        font-size: 12px;
+    }
+
+    /* PASSWORD STRENGTH */
+    .password-strength {
+        margin-top: 10px;
+    }
+
+    .strength-bar {
+        height: 5px;
+        border-radius: 10px;
+        background: #e2e8f0;
+        overflow: hidden;
+    }
+
+    .strength-fill {
+        width: 0%;
+        height: 100%;
+        border-radius: inherit;
+        transition: width 0.25s ease;
+    }
+
+    .strength-text {
+        display: block;
+        margin-top: 6px;
+        font-size: 12px;
+        color: #64748b;
+    }
+
+    /* ROLE CARDS */
+    .role-options {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+    }
+
+    .role-option {
+        position: relative;
+    }
+
+    .role-option input {
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    .role-label {
+        display: block;
+        padding: 17px;
+        border: 1px solid #dbe3ef;
+        border-radius: 14px;
+        cursor: pointer;
+        background: #f8fafc;
+        transition: all 0.2s ease;
+    }
+
+    .role-label:hover {
+        border-color: #93c5fd;
+        background: #eff6ff;
+    }
+
+    .role-option input:checked + .role-label {
+        border-color: #2563eb;
+        background: #eff6ff;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.09);
+    }
+
+    .role-title {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        color: #1e293b;
+        font-weight: 700;
+        font-size: 14px;
+    }
+
+    .role-description {
+        display: block;
+        margin-top: 5px;
+        padding-left: 26px;
+        color: #64748b;
+        font-size: 12px;
+        line-height: 1.5;
+    }
+
+    /* SECURITY NOTICE */
+    .security-notice {
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+        margin-top: 25px;
+        padding: 14px 16px;
+        border-radius: 12px;
+        background: #f0f9ff;
+        border: 1px solid #bae6fd;
+        color: #0c4a6e;
+        font-size: 13px;
+        line-height: 1.5;
+    }
+
+    .security-icon {
+        font-size: 18px;
+        flex-shrink: 0;
+    }
+
+    /* ACTIONS */
+    .form-actions {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-top: 30px;
+        padding-top: 24px;
+        border-top: 1px solid #e5e7eb;
+    }
+
+    .action-right {
+        display: flex;
+        gap: 10px;
+    }
+
+    .modern-btn {
+        min-height: 45px;
+        padding: 0 20px;
+        border-radius: 11px;
+        border: 1px solid transparent;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition: all 0.2s ease;
+    }
+
+    .btn-cancel {
+        color: #475569;
+        background: #f8fafc;
+        border-color: #dbe3ef;
+    }
+
+    .btn-cancel:hover {
+        background: #f1f5f9;
+        border-color: #cbd5e1;
+    }
+
+    .btn-create {
+        color: white;
+        background: linear-gradient(
+            135deg,
+            #2563eb,
+            #1d4ed8
+        );
+        box-shadow: 0 5px 14px rgba(37, 99, 235, 0.22);
+    }
+
+    .btn-create:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 8px 18px rgba(37, 99, 235, 0.28);
+    }
+
+    .btn-create:active {
+        transform: translateY(0);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 650px) {
+
+        .create-user-wrapper {
+            margin: 10px 0 30px;
+        }
+
+        .user-card {
+            border-radius: 16px;
+        }
+
+        .user-card-header {
+            padding: 24px 20px;
+        }
+
+        .user-card-body {
+            padding: 22px 20px;
+        }
+
+        .role-options {
+            grid-template-columns: 1fr;
+        }
+
+        .form-actions {
+            flex-direction: column-reverse;
+            align-items: stretch;
+        }
+
+        .action-right {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .modern-btn {
+            width: 100%;
+        }
+    }
+</style>
+
+
+<div class="create-user-wrapper">
+
+    <div class="user-card">
+
+        <!-- HEADER -->
+        <div class="user-card-header">
+
+            <div class="header-content">
+
+                <div class="header-icon">
+                    👤
+                </div>
+
+                <div>
+                    <h2>Create New User</h2>
+
+                    <p>
+                        Add a secure account to the digital signing system.
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- BODY -->
+        <div class="user-card-body">
+
+            <form method="POST" autocomplete="off">
+
+                <!-- ACCOUNT INFORMATION -->
+                <div class="form-section">
+
+                    <div class="form-section-title">
+                        <span>🔐</span>
+                        Account Information
+                    </div>
+
+
+                    <!-- USERNAME -->
+                    <div class="form-group">
+
+                        <label class="form-label" for="username">
+                            Username
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <span class="input-icon">
+                                👤
+                            </span>
+
+                            <input
+                                class="modern-input"
+                                id="username"
+                                type="text"
+                                name="username"
+                                minlength="3"
+                                maxlength="50"
+                                autocomplete="username"
+                                required
+                                placeholder="Enter username"
+                            >
+
+                        </div>
+
+                        <div class="field-help">
+                            Use at least 3 characters.
+                        </div>
+
+                    </div>
+
+
+                    <!-- PASSWORD -->
+                    <div class="form-group">
+
+                        <label class="form-label" for="password">
+                            Password
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <span class="input-icon">
+                                🔒
+                            </span>
+
+                            <input
+                                class="modern-input password-input"
+                                id="password"
+                                type="password"
+                                name="password"
+                                minlength="8"
+                                autocomplete="new-password"
+                                required
+                                placeholder="Create a strong password"
+                                oninput="checkPasswordStrength(this.value)"
+                            >
+
+                            <button
+                                type="button"
+                                class="password-toggle"
+                                onclick="togglePassword()"
+                                aria-label="Show password"
+                                id="passwordToggle"
+                            >
+                                👁️
+                            </button>
+
+                        </div>
+
+
+                        <div class="password-strength">
+
+                            <div class="strength-bar">
+
+                                <div
+                                    class="strength-fill"
+                                    id="strengthFill"
+                                ></div>
+
+                            </div>
+
+                            <span
+                                class="strength-text"
+                                id="strengthText"
+                            >
+                                Minimum 8 characters
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ROLE -->
+                <div class="form-section">
+
+                    <div class="form-section-title">
+                        <span>🛡️</span>
+                        Access Level
+                    </div>
+
+
+                    <div class="role-options">
+
+                        <!-- USER -->
+                        <div class="role-option">
+
+                            <input
+                                type="radio"
+                                name="role"
+                                id="roleUser"
+                                value="user"
+                                checked
+                            >
+
+                            <label
+                                class="role-label"
+                                for="roleUser"
+                            >
+
+                                <span class="role-title">
+                                    👤
+                                    Standard User
+                                </span>
+
+                                <span class="role-description">
+                                    Can use the digital signing system
+                                    according to assigned permissions.
+                                </span>
+
+                            </label>
+
+                        </div>
+
+
+                        <!-- ADMIN -->
+                        <div class="role-option">
+
+                            <input
+                                type="radio"
+                                name="role"
+                                id="roleAdmin"
+                                value="admin"
+                            >
+
+                            <label
+                                class="role-label"
+                                for="roleAdmin"
+                            >
+
+                                <span class="role-title">
+                                    🛡️
+                                    Administrator
+                                </span>
+
+                                <span class="role-description">
+                                    Can manage users, documents and
+                                    administrative settings.
+                                </span>
+
+                            </label>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- SECURITY NOTICE -->
+                <div class="security-notice">
+
+                    <span class="security-icon">
+                        🔒
+                    </span>
+
+                    <div>
+                        <strong>Security reminder</strong><br>
+
+                        Give each person their own account.
+                        Never share administrator credentials.
+                        Users should keep their passwords private.
+                    </div>
+
+                </div>
+
+
+                <!-- ACTIONS -->
+                <div class="form-actions">
+
+                    <a
+                        class="modern-btn btn-cancel"
+                        href="{{ url_for('admin_users') }}"
+                    >
+                        ← Cancel
+                    </a>
+
+
+                    <div class="action-right">
+
+                        <button
+                            type="reset"
+                            class="modern-btn btn-cancel"
+                        >
+                            Clear
+                        </button>
+
+                        <button
+                            type="submit"
+                            class="modern-btn btn-create"
+                        >
+                            <span>✓</span>
+                            Create User
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
 
 </div>
 
-<div class="form-group">
 
-<label>
-    Password
-</label>
+<script>
 
-<input
-    type="password"
-    name="password"
-    minlength="8"
-    autocomplete="new-password"
-    required
-    placeholder="Enter password"
->
+function togglePassword() {
 
-</div>
+    const password =
+        document.getElementById("password");
 
-<div class="form-group">
+    const button =
+        document.getElementById("passwordToggle");
 
-<label>
-    Role
-</label>
+    if (password.type === "password") {
 
-<select name="role">
+        password.type = "text";
 
-<option value="user">
-    User
-</option>
+        button.textContent = "🙈";
+        button.setAttribute(
+            "aria-label",
+            "Hide password"
+        );
 
-<option value="admin">
-    Administrator
-</option>
+    } else {
 
-</select>
+        password.type = "password";
 
-</div>
+        button.textContent = "👁️";
+        button.setAttribute(
+            "aria-label",
+            "Show password"
+        );
 
-<div style="
-    display:flex;
-    gap:10px;
-    justify-content:flex-end;
-">
+    }
+}
 
-<a class="btn btn-light"
-   href="{{ url_for('admin_users') }}">
-    Cancel
-</a>
 
-<button class="btn btn-primary"
-        type="submit">
-    Create User
-</button>
+function checkPasswordStrength(password) {
 
-</div>
+    const fill =
+        document.getElementById("strengthFill");
 
-</form>
+    const text =
+        document.getElementById("strengthText");
 
-</div>
+    let score = 0;
 
-</div>
+    if (password.length >= 8) {
+        score++;
+    }
+
+    if (password.length >= 12) {
+        score++;
+    }
+
+    if (/[A-Z]/.test(password)) {
+        score++;
+    }
+
+    if (/[a-z]/.test(password)) {
+        score++;
+    }
+
+    if (/[0-9]/.test(password)) {
+        score++;
+    }
+
+    if (/[^A-Za-z0-9]/.test(password)) {
+        score++;
+    }
+
+
+    if (password.length === 0) {
+
+        fill.style.width = "0%";
+        text.textContent =
+            "Minimum 8 characters";
+
+        return;
+    }
+
+
+    if (score <= 2) {
+
+        fill.style.width = "35%";
+        text.textContent =
+            "Weak password";
+
+    } else if (score <= 4) {
+
+        fill.style.width = "65%";
+        text.textContent =
+            "Good password";
+
+    } else {
+
+        fill.style.width = "100%";
+        text.textContent =
+            "Strong password";
+
+    }
+}
+
+</script>
 
 {% endblock %}
+```

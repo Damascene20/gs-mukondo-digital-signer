@@ -1,4 +1,3 @@
-
 {% extends "base.html" %}
 
 {% block title %}
@@ -11,126 +10,1316 @@ Document History
 
 {% block content %}
 
-<div class="card">
+<style>
 
-    <div style="margin-bottom:20px;">
+/* =========================================================
+   GS MUKONDO DIGITAL SIGNER
+   COMPACT + ANIMATED TECHNOLOGY COLOR SYSTEM
+========================================================= */
 
-        <h2>📁 All Signed Documents</h2>
+.documents-page {
+    width: 100%;
+    max-width: 100%;
+}
 
-        <p style="color:#718096;margin-top:5px;">
-            Administrator document history.
-        </p>
+
+/* =========================================================
+   ANIMATED COLOR SYSTEM
+========================================================= */
+
+@keyframes brandFlow {
+
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+
+}
+
+@keyframes glowPulse {
+
+    0%,
+    100% {
+        box-shadow:
+            0 5px 14px rgba(37, 99, 235, 0.16);
+    }
+
+    50% {
+        box-shadow:
+            0 8px 22px rgba(124, 58, 237, 0.30);
+    }
+
+}
+
+@keyframes borderFlow {
+
+    0% {
+        border-color: #dbeafe;
+    }
+
+    50% {
+        border-color: #ddd6fe;
+    }
+
+    100% {
+        border-color: #dbeafe;
+    }
+
+}
+
+@keyframes statusPulse {
+
+    0%,
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.65;
+        transform: scale(1.15);
+    }
+
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.documents-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 16px;
+}
+
+.documents-heading {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+}
+
+
+/* Animated gradient icon */
+
+.documents-heading-icon {
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    color: white;
+
+    font-size: 17px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #2563eb,
+            #4f46e5,
+            #7c3aed,
+            #2563eb
+        );
+
+    background-size: 300% 300%;
+
+    animation:
+        brandFlow 5s ease infinite,
+        glowPulse 3s ease-in-out infinite;
+}
+
+
+/* Heading */
+
+.documents-heading h2 {
+    margin: 0 0 2px;
+
+    color: #111827;
+
+    font-size: 20px;
+
+    font-weight: 750;
+}
+
+.documents-heading p {
+    margin: 0;
+
+    color: #6b7280;
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   SUMMARY
+========================================================= */
+
+.document-summary {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 10px;
+
+    margin-bottom: 15px;
+}
+
+.document-summary-card {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 11px 13px;
+
+    background: #ffffff;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 11px;
+
+    box-shadow:
+        0 3px 10px rgba(15, 23, 42, 0.04);
+
+    overflow: hidden;
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.document-summary-card:hover {
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 8px 20px rgba(37, 99, 235, 0.10);
+}
+
+
+/* Animated top line */
+
+.document-summary-card::before {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    top: 0;
+
+    width: 100%;
+    height: 2px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #2563eb,
+            #4f46e5,
+            #7c3aed,
+            #2563eb
+        );
+
+    background-size: 300% 100%;
+
+    animation:
+        brandFlow 4s linear infinite;
+}
+
+
+/* Decorative circle */
+
+.document-summary-card::after {
+    content: "";
+
+    position: absolute;
+
+    width: 65px;
+    height: 65px;
+
+    right: -25px;
+    top: -25px;
+
+    border-radius: 50%;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(37, 99, 235, 0.07),
+            rgba(124, 58, 237, 0.08)
+        );
+}
+
+
+/* Summary icon */
+
+.document-summary-icon {
+    width: 32px;
+    height: 32px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 8px;
+
+    color: white;
+
+    font-size: 14px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #2563eb,
+            #4f46e5,
+            #7c3aed
+        );
+
+    background-size: 200% 200%;
+
+    animation:
+        brandFlow 4s ease infinite;
+}
+
+
+/* Summary information */
+
+.document-summary-info {
+    position: relative;
+    z-index: 2;
+}
+
+.document-summary-info strong {
+    display: block;
+
+    color: #111827;
+
+    font-size: 16px;
+
+    line-height: 1.1;
+}
+
+.document-summary-info span {
+    display: block;
+
+    margin-top: 2px;
+
+    color: #6b7280;
+
+    font-size: 10px;
+
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   MAIN CARD
+========================================================= */
+
+.documents-card {
+    padding: 0 !important;
+
+    overflow: hidden;
+
+    background: white;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 13px;
+
+    box-shadow:
+        0 5px 18px rgba(15, 23, 42, 0.05);
+
+    animation:
+        borderFlow 5s ease-in-out infinite;
+}
+
+
+/* =========================================================
+   CARD HEADER
+========================================================= */
+
+.documents-card-header {
+    display: flex;
+    align-items: center;
+
+    padding: 12px 15px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #ffffff,
+            #fafbff,
+            #ffffff
+        );
+
+    background-size: 200% 100%;
+
+    animation:
+        headerFlow 8s ease infinite;
+
+    border-bottom: 1px solid #edf0f4;
+}
+
+@keyframes headerFlow {
+
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+
+}
+
+.documents-card-title {
+    display: flex;
+    align-items: center;
+
+    gap: 7px;
+}
+
+.documents-card-title h3 {
+    margin: 0;
+
+    color: #111827;
+
+    font-size: 14px;
+
+    font-weight: 750;
+}
+
+.document-count {
+    display: inline-flex;
+
+    min-width: 22px;
+    height: 20px;
+
+    padding: 0 6px;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 15px;
+
+    color: white;
+
+    font-size: 10px;
+
+    font-weight: 750;
+
+    background:
+        linear-gradient(
+            135deg,
+            #2563eb,
+            #7c3aed
+        );
+
+    background-size: 200% 200%;
+
+    animation:
+        brandFlow 4s ease infinite;
+}
+
+
+/* =========================================================
+   TABLE
+========================================================= */
+
+.document-table-wrapper {
+    width: 100%;
+
+    overflow-x: auto;
+}
+
+.document-table {
+    width: 100%;
+
+    border-collapse: collapse;
+
+    min-width: 780px;
+}
+
+.document-table thead th {
+    padding: 9px 10px;
+
+    text-align: left;
+
+    color: #6b7280;
+
+    background: #f8fafc;
+
+    border-bottom: 1px solid #e5e7eb;
+
+    font-size: 9px;
+
+    font-weight: 800;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.3px;
+
+    white-space: nowrap;
+}
+
+.document-table tbody td {
+    padding: 10px;
+
+    color: #374151;
+
+    font-size: 11px;
+
+    border-bottom: 1px solid #f0f2f5;
+
+    vertical-align: middle;
+}
+
+.document-table tbody tr {
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+.document-table tbody tr:hover {
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(239, 246, 255, 0.70),
+            rgba(245, 243, 255, 0.70)
+        );
+}
+
+.document-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+
+/* =========================================================
+   DOCUMENT
+========================================================= */
+
+.document-name {
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    max-width: 200px;
+}
+
+.document-icon {
+    width: 29px;
+    height: 29px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 7px;
+
+    color: white;
+
+    font-size: 13px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ef4444,
+            #f97316
+        );
+
+    background-size: 200% 200%;
+
+    animation:
+        documentColor 5s ease infinite;
+}
+
+@keyframes documentColor {
+
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+
+}
+
+.document-name-text {
+    min-width: 0;
+}
+
+.document-name-title {
+    display: block;
+
+    max-width: 155px;
+
+    overflow: hidden;
+
+    color: #111827;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+}
+
+.document-name-label {
+    display: block;
+
+    margin-top: 1px;
+
+    color: #9ca3af;
+
+    font-size: 8px;
+}
+
+
+/* =========================================================
+   IDS
+========================================================= */
+
+.document-code {
+    display: inline-block;
+
+    max-width: 105px;
+
+    padding: 4px 6px;
+
+    overflow: hidden;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 5px;
+
+    background: #f8fafc;
+
+    color: #475569;
+
+    font-family:
+        "SFMono-Regular",
+        Consolas,
+        monospace;
+
+    font-size: 8px;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   USER
+========================================================= */
+
+.document-user {
+    display: flex;
+
+    align-items: center;
+
+    gap: 6px;
+}
+
+.document-user-avatar {
+    width: 25px;
+    height: 25px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 7px;
+
+    color: white;
+
+    font-size: 8px;
+
+    font-weight: 800;
+
+    background:
+        linear-gradient(
+            135deg,
+            #2563eb,
+            #7c3aed,
+            #4f46e5
+        );
+
+    background-size: 250% 250%;
+
+    animation:
+        brandFlow 5s ease infinite;
+}
+
+.document-user-name {
+    max-width: 90px;
+
+    overflow: hidden;
+
+    color: #374151;
+
+    font-size: 10px;
+
+    font-weight: 650;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   SIGNED BY
+========================================================= */
+
+.signed-by {
+    display: block;
+
+    max-width: 120px;
+
+    overflow: hidden;
+
+    color: #374151;
+
+    font-size: 10px;
+
+    font-weight: 650;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   DATE
+========================================================= */
+
+.document-date {
+    color: #4b5563;
+
+    font-size: 9px;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.document-status {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 4px;
+
+    padding: 4px 7px;
+
+    border-radius: 15px;
+
+    background: #ecfdf5;
+
+    color: #059669;
+
+    font-size: 9px;
+
+    font-weight: 750;
+
+    white-space: nowrap;
+}
+
+.document-status::before {
+    content: "";
+
+    width: 5px;
+    height: 5px;
+
+    border-radius: 50%;
+
+    background: currentColor;
+
+    animation:
+        statusPulse 1.8s ease-in-out infinite;
+}
+
+
+/* =========================================================
+   ACTIONS
+========================================================= */
+
+.document-actions {
+    display: flex;
+
+    align-items: center;
+
+    gap: 4px;
+
+    white-space: nowrap;
+}
+
+.document-action {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 3px;
+
+    padding: 6px 8px;
+
+    border-radius: 6px;
+
+    text-decoration: none;
+
+    font-size: 9px;
+
+    font-weight: 750;
+
+    transition:
+        transform 0.18s ease,
+        box-shadow 0.18s ease,
+        filter 0.18s ease;
+}
+
+.document-action:hover {
+    transform: translateY(-1px);
+
+    filter: brightness(1.05);
+}
+
+.document-view {
+    color: #374151;
+
+    background: #f3f4f6;
+
+    border: 1px solid #e5e7eb;
+}
+
+.document-view:hover {
+    border-color: #c7d2fe;
+
+    box-shadow:
+        0 4px 10px rgba(79, 70, 229, 0.10);
+}
+
+
+/* Animated download button */
+
+.document-download {
+    color: white;
+
+    background:
+        linear-gradient(
+            135deg,
+            #2563eb,
+            #4f46e5,
+            #7c3aed,
+            #2563eb
+        );
+
+    background-size: 300% 300%;
+
+    animation:
+        brandFlow 5s ease infinite;
+
+    box-shadow:
+        0 4px 9px rgba(37, 99, 235, 0.15);
+}
+
+.document-download:hover {
+    box-shadow:
+        0 6px 15px rgba(79, 70, 229, 0.25);
+}
+
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+.document-empty {
+    padding: 45px 20px;
+
+    text-align: center;
+}
+
+.document-empty-icon {
+    width: 48px;
+    height: 48px;
+
+    margin: 0 auto 10px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 13px;
+
+    color: white;
+
+    font-size: 20px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #2563eb,
+            #7c3aed
+        );
+
+    background-size: 200% 200%;
+
+    animation:
+        brandFlow 5s ease infinite,
+        glowPulse 3s ease-in-out infinite;
+}
+
+.document-empty strong {
+    display: block;
+
+    margin-bottom: 4px;
+
+    color: #374151;
+
+    font-size: 13px;
+}
+
+.document-empty span {
+    color: #9ca3af;
+
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 850px) {
+
+    .document-summary {
+        grid-template-columns: 1fr;
+    }
+
+    .document-table {
+        min-width: 760px;
+    }
+
+}
+
+@media (max-width: 600px) {
+
+    .documents-heading h2 {
+        font-size: 18px;
+    }
+
+    .documents-heading-icon {
+        width: 36px;
+        height: 36px;
+
+        font-size: 15px;
+    }
+
+    .documents-heading p {
+        font-size: 10px;
+    }
+
+    .document-summary-card {
+        padding: 9px 11px;
+    }
+
+}
+
+
+/* =========================================================
+   ACCESSIBILITY
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+
+        animation-duration: 0.01ms !important;
+
+        animation-iteration-count: 1 !important;
+
+        transition-duration: 0.01ms !important;
+
+    }
+
+}
+
+</style>
+
+
+<div class="documents-page">
+
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <div class="documents-header">
+
+        <div class="documents-heading">
+
+            <div class="documents-heading-icon">
+                📁
+            </div>
+
+            <div>
+
+                <h2>
+                    Document History
+                </h2>
+
+                <p>
+                    Administrator history of digitally signed documents.
+                </p>
+
+            </div>
+
+        </div>
 
     </div>
 
-    {% if documents %}
 
-    <div class="table-wrapper">
+    <!-- =====================================================
+         SUMMARY
+    ====================================================== -->
 
-        <table>
+    {% set total_documents = documents|length %}
 
-            <thead>
+    <div class="document-summary">
 
-            <tr>
-                <th>Document</th>
-                <th>Document ID</th>
-                <th>Signature ID</th>
-                <th>User</th>
-                <th>Signed By</th>
-                <th>Date</th>
-                <th>Status</th>
-                <th>Action</th>
-            </tr>
+        <div class="document-summary-card">
 
-            </thead>
+            <div class="document-summary-icon">
+                📄
+            </div>
 
-            <tbody>
+            <div class="document-summary-info">
 
-            {% for document in documents %}
+                <strong>
+                    {{ total_documents }}
+                </strong>
 
-            <tr>
+                <span>
+                    Signed Documents
+                </span>
 
-                <td>
-                    {{ document["original_filename"] }}
-                </td>
+            </div>
 
-                <td>
-                    <code>
-                        {{ document["document_id"] }}
-                    </code>
-                </td>
+        </div>
 
-                <td>
-                    <code>
-                        {{ document["signature_id"] }}
-                    </code>
-                </td>
 
-                <td>
-                    {{ document["username"] or "Unknown" }}
-                </td>
+        <div class="document-summary-card">
 
-                <td>
-                    {{ document["signed_by"] }}
-                </td>
+            <div class="document-summary-icon">
+                ✓
+            </div>
 
-                <td>
-                    {{ document["signed_at"] }}
-                </td>
+            <div class="document-summary-info">
 
-                <td>
+                <strong>
+                    {{ total_documents }}
+                </strong>
 
-                    <span class="badge badge-success">
-                        {{ document["status"]|capitalize }}
-                    </span>
+                <span>
+                    Successfully Signed
+                </span>
 
-                </td>
+            </div>
 
-                <td>
+        </div>
 
-                    <div class="actions">
 
-                        <a
-                            class="btn btn-light"
-                            href="{{ url_for(
-                                'result',
-                                filename=document['signed_filename']
-                            ) }}"
+        <div class="document-summary-card">
+
+            <div class="document-summary-icon">
+                🗂
+            </div>
+
+            <div class="document-summary-info">
+
+                <strong>
+                    {{ total_documents }}
+                </strong>
+
+                <span>
+                    History Records
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         DOCUMENT TABLE
+    ====================================================== -->
+
+    <div class="card documents-card">
+
+        <div class="documents-card-header">
+
+            <div class="documents-card-title">
+
+                <h3>
+                    All Signed Documents
+                </h3>
+
+                <span class="document-count">
+                    {{ total_documents }}
+                </span>
+
+            </div>
+
+        </div>
+
+
+        {% if documents %}
+
+        <div class="document-table-wrapper">
+
+            <table class="document-table">
+
+                <thead>
+
+                <tr>
+
+                    <th>Document</th>
+                    <th>Document ID</th>
+                    <th>Signing ID</th>
+                    <th>User</th>
+                    <th>Signed By</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Action</th>
+
+                </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                {% for document in documents %}
+
+                <tr>
+
+                    <td>
+
+                        <div class="document-name">
+
+                            <div class="document-icon">
+                                📄
+                            </div>
+
+                            <div class="document-name-text">
+
+                                <span
+                                    class="document-name-title"
+                                    title="{{ document['original_filename'] }}"
+                                >
+                                    {{ document["original_filename"] }}
+                                </span>
+
+                                <span class="document-name-label">
+                                    Signed PDF
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </td>
+
+
+                    <td>
+
+                        <code class="document-code">
+                            {{ document["document_id"] }}
+                        </code>
+
+                    </td>
+
+
+                    <td>
+
+                        <code class="document-code">
+                            {{ document["signature_id"] }}
+                        </code>
+
+                    </td>
+
+
+                    <td>
+
+                        <div class="document-user">
+
+                            <div class="document-user-avatar">
+
+                                {% if document["username"] %}
+
+                                    {{ document["username"][0]|upper }}
+
+                                {% else %}
+
+                                    ?
+
+                                {% endif %}
+
+                            </div>
+
+                            <span class="document-user-name">
+
+                                {{ document["username"] or "Unknown" }}
+
+                            </span>
+
+                        </div>
+
+                    </td>
+
+
+                    <td>
+
+                        <span
+                            class="signed-by"
+                            title="{{ document['signed_by'] }}"
                         >
-                            View
-                        </a>
+                            {{ document["signed_by"] }}
+                        </span>
 
-                        <a
-                            class="btn btn-primary"
-                            href="{{ url_for(
-                                'download',
-                                filename=document['signed_filename']
-                            ) }}"
-                        >
-                            Download
-                        </a>
+                    </td>
 
-                    </div>
 
-                </td>
+                    <td>
 
-            </tr>
+                        <span class="document-date">
 
-            {% endfor %}
+                            {{ document["signed_at"] }}
 
-            </tbody>
+                        </span>
 
-        </table>
+                    </td>
+
+
+                    <td>
+
+                        <span class="document-status">
+
+                            {{ document["status"]|capitalize }}
+
+                        </span>
+
+                    </td>
+
+
+                    <td>
+
+                        <div class="document-actions">
+
+                            <a
+                                class="document-action document-view"
+                                href="{{ url_for(
+                                    'result',
+                                    filename=document['signed_filename']
+                                ) }}"
+                            >
+                                👁 View
+                            </a>
+
+
+                            <a
+                                class="document-action document-download"
+                                href="{{ url_for(
+                                    'download',
+                                    filename=document['signed_filename']
+                                ) }}"
+                            >
+                                ↓ Download
+                            </a>
+
+                        </div>
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        {% else %}
+
+        <div class="document-empty">
+
+            <div class="document-empty-icon">
+                📂
+            </div>
+
+            <strong>
+                No signed documents found
+            </strong>
+
+            <span>
+                Signed documents will appear here once they are created.
+            </span>
+
+        </div>
+
+        {% endif %}
 
     </div>
-
-    {% else %}
-
-    <div class="empty">
-        No signed documents found.
-    </div>
-
-    {% endif %}
 
 </div>
 
