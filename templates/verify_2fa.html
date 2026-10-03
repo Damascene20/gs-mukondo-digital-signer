@@ -8,140 +8,456 @@
 <meta name="viewport"
       content="width=device-width, initial-scale=1.0">
 
-<title>Two-Factor Authentication</title>
+<title>Two-Factor Authentication | GS MUKONDO Digital Signer</title>
 
 <style>
+
+/* =========================================================
+   GS MUKONDO DIGITAL SIGNER
+   MODERN 2FA AUTHENTICATION
+========================================================= */
+
+:root {
+    --bg-dark: #07111f;
+    --bg-navy: #0b1728;
+
+    --card: rgba(255, 255, 255, 0.97);
+    --text: #101828;
+    --muted: #667085;
+
+    --primary: #2563eb;
+    --primary-dark: #1d4ed8;
+
+    --border: #e4e7ec;
+
+    --danger-bg: #fef3f2;
+    --danger-text: #b42318;
+
+    --radius: 16px;
+}
+
 * {
     box-sizing: border-box;
 }
 
+html,
 body {
     margin: 0;
+    min-height: 100%;
+}
+
+body {
     min-height: 100vh;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
+    padding: 18px;
+
     font-family:
+        Inter,
         "Segoe UI",
         Arial,
         sans-serif;
 
+    color: var(--text);
+
     background:
+        radial-gradient(
+            circle at 20% 20%,
+            rgba(37, 99, 235, .18),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 80% 80%,
+            rgba(6, 182, 212, .12),
+            transparent 30%
+        ),
         linear-gradient(
             135deg,
-            #102a43,
-            #173f5f,
-            #0b7285
+            var(--bg-dark),
+            var(--bg-navy)
         );
+
+    overflow: hidden;
 }
+
+
+/* =========================================================
+   BACKGROUND EFFECT
+========================================================= */
+
+body::before {
+    content: "";
+
+    position: fixed;
+    width: 320px;
+    height: 320px;
+
+    top: -160px;
+    right: -120px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(37, 99, 235, .10);
+
+    filter: blur(5px);
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   CARD
+========================================================= */
 
 .card {
-    width: 100%;
-    max-width: 430px;
-    margin: 20px;
-    padding: 38px;
+    position: relative;
 
-    background: white;
-    border-radius: 24px;
+    width: 100%;
+    max-width: 360px;
+
+    padding: 26px 25px 22px;
+
+    background: var(--card);
+
+    border: 1px solid rgba(255, 255, 255, .7);
+
+    border-radius: var(--radius);
 
     box-shadow:
-        0 25px 70px rgba(0,0,0,.25);
+        0 20px 55px rgba(0, 0, 0, .28),
+        0 2px 8px rgba(0, 0, 0, .08);
 
     text-align: center;
+
+    animation:
+        cardIn .45s ease-out;
 }
 
+@keyframes cardIn {
+
+    from {
+        opacity: 0;
+        transform: translateY(12px) scale(.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+
+/* =========================================================
+   SECURITY ICON
+========================================================= */
+
 .icon {
-    width: 72px;
-    height: 72px;
+    width: 54px;
+    height: 54px;
 
-    margin: auto auto 20px;
-
-    border-radius: 20px;
+    margin: 0 auto 14px;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    background: #eaf4ff;
+    border-radius: 14px;
 
-    font-size: 32px;
+    background:
+        linear-gradient(
+            135deg,
+            #eff6ff,
+            #e0f2fe
+        );
+
+    border: 1px solid #dbeafe;
+
+    font-size: 25px;
+
+    box-shadow:
+        0 6px 18px rgba(37, 99, 235, .10);
 }
+
+
+/* =========================================================
+   TITLE
+========================================================= */
 
 h1 {
     margin: 0;
-    color: #102a43;
+
+    color: #101828;
+
+    font-size: 22px;
+    line-height: 1.25;
+
+    font-weight: 750;
+
+    letter-spacing: -.3px;
 }
+
+
+/* =========================================================
+   DESCRIPTION
+========================================================= */
 
 .description {
-    color: #718096;
-    font-size: 14px;
-    line-height: 1.6;
-    margin: 10px 0 25px;
+    max-width: 285px;
+
+    margin: 9px auto 19px;
+
+    color: var(--muted);
+
+    font-size: 12.5px;
+
+    line-height: 1.55;
 }
 
+
+/* =========================================================
+   FLASH MESSAGE
+========================================================= */
+
 .alert {
-    padding: 12px;
-    border-radius: 10px;
-    margin-bottom: 15px;
-    font-size: 13px;
+    padding: 9px 11px;
+
+    margin-bottom: 12px;
+
+    border-radius: 9px;
+
+    font-size: 12px;
+
+    line-height: 1.4;
+
+    border: 1px solid transparent;
 }
 
 .alert-danger {
-    background: #fdecec;
-    color: #a61b1b;
+    background: var(--danger-bg);
+
+    color: var(--danger-text);
+
+    border-color: #fecdca;
 }
+
+
+/* =========================================================
+   OTP INPUT
+========================================================= */
 
 input {
     width: 100%;
-    padding: 17px;
 
-    border: 1px solid #d9e0e8;
-    border-radius: 12px;
+    height: 54px;
+
+    padding: 8px 12px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 11px;
+
+    outline: none;
+
+    background: #f9fafb;
+
+    color: #101828;
 
     text-align: center;
 
-    font-size: 28px;
-    font-weight: 800;
-    letter-spacing: 8px;
+    font-size: 23px;
 
-    outline: none;
+    font-weight: 750;
+
+    letter-spacing: 7px;
+
+    transition:
+        border-color .2s ease,
+        box-shadow .2s ease,
+        background .2s ease,
+        transform .2s ease;
+}
+
+input::placeholder {
+    color: #98a2b3;
+
+    opacity: .8;
 }
 
 input:focus {
-    border-color: #173f5f;
+    background: #ffffff;
+
+    border-color: var(--primary);
 
     box-shadow:
-        0 0 0 3px rgba(23,63,95,.1);
+        0 0 0 3px rgba(37, 99, 235, .10);
+
+    transform: translateY(-1px);
 }
+
+
+/* =========================================================
+   VERIFY BUTTON
+========================================================= */
 
 button {
     width: 100%;
 
-    margin-top: 18px;
+    height: 45px;
 
-    padding: 14px;
+    margin-top: 12px;
 
     border: 0;
-    border-radius: 11px;
 
-    background: #173f5f;
-    color: white;
+    border-radius: 10px;
 
-    font-size: 14px;
-    font-weight: 750;
+    background:
+        linear-gradient(
+            135deg,
+            var(--primary),
+            var(--primary-dark)
+        );
+
+    color: #ffffff;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    letter-spacing: .1px;
 
     cursor: pointer;
+
+    box-shadow:
+        0 7px 16px rgba(37, 99, 235, .22);
+
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease,
+        filter .2s ease;
 }
+
+button:hover {
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 10px 20px rgba(37, 99, 235, .28);
+
+    filter: brightness(1.03);
+}
+
+button:active {
+    transform: translateY(0);
+
+    box-shadow:
+        0 4px 10px rgba(37, 99, 235, .18);
+}
+
+
+/* =========================================================
+   BACK LINK
+========================================================= */
 
 .back {
-    display: block;
-    margin-top: 18px;
+    display: inline-block;
+
+    margin-top: 14px;
 
     color: #667085;
-    font-size: 13px;
+
+    font-size: 11.5px;
+
+    font-weight: 600;
+
+    text-decoration: none;
+
+    transition:
+        color .2s ease,
+        transform .2s ease;
 }
+
+.back:hover {
+    color: var(--primary);
+
+    transform: translateX(-2px);
+}
+
+
+/* =========================================================
+   SECURITY LABEL
+========================================================= */
+
+.security-label {
+    margin-top: 17px;
+
+    padding-top: 13px;
+
+    border-top: 1px solid #eef0f3;
+
+    color: #98a2b3;
+
+    font-size: 9.5px;
+
+    font-weight: 600;
+
+    letter-spacing: .5px;
+
+    text-transform: uppercase;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 420px) {
+
+    body {
+        padding: 14px;
+    }
+
+    .card {
+        max-width: 350px;
+
+        padding:
+            23px 20px 19px;
+    }
+
+    .icon {
+        width: 50px;
+        height: 50px;
+
+        margin-bottom: 12px;
+
+        font-size: 23px;
+    }
+
+    h1 {
+        font-size: 20px;
+    }
+
+    .description {
+        font-size: 12px;
+
+        margin-bottom: 17px;
+    }
+
+    input {
+        height: 51px;
+
+        font-size: 21px;
+
+        letter-spacing: 6px;
+    }
+
+    button {
+        height: 43px;
+    }
+}
+
 </style>
 
 </head>
@@ -150,16 +466,29 @@ button {
 
 <div class="card">
 
+    <!-- SECURITY ICON -->
+
     <div class="icon">
         🔐
     </div>
 
-    <h1>Verify Identity</h1>
+
+    <!-- TITLE -->
+
+    <h1>
+        Verify Identity
+    </h1>
+
+
+    <!-- DESCRIPTION -->
 
     <p class="description">
         Open Google Authenticator and enter
-        the current 6-digit verification code.
+        your current 6-digit verification code.
     </p>
+
+
+    <!-- FLASH MESSAGES -->
 
     {% with messages = get_flashed_messages(with_categories=true) %}
 
@@ -172,6 +501,9 @@ button {
         {% endfor %}
 
     {% endwith %}
+
+
+    <!-- 2FA FORM -->
 
     <form method="POST"
           action="{{ url_for('verify_2fa') }}">
@@ -186,7 +518,9 @@ button {
             placeholder="000000"
             required
             autofocus
+            aria-label="6-digit verification code"
         >
+
 
         <button type="submit">
             Verify Code
@@ -194,25 +528,53 @@ button {
 
     </form>
 
-    <a class="back"
-       href="{{ url_for('login') }}">
+
+    <!-- BACK TO LOGIN -->
+
+    <a
+        class="back"
+        href="{{ url_for('login') }}"
+    >
         ← Back to login
     </a>
 
+
+    <!-- SECURITY STATUS -->
+
+    <div class="security-label">
+        Secure Two-Factor Authentication
+    </div>
+
 </div>
 
+
 <script>
+
+/* =========================================================
+   OTP INPUT CONTROL
+========================================================= */
+
 const input =
-    document.querySelector('input[name="otp_code"]');
+    document.querySelector(
+        'input[name="otp_code"]'
+    );
 
-input.addEventListener("input", function () {
+if (input) {
 
-    this.value =
-        this.value
-        .replace(/\D/g, "")
-        .slice(0, 6);
+    input.addEventListener(
+        "input",
+        function () {
 
-});
+            this.value =
+                this.value
+                    .replace(/\D/g, "")
+                    .slice(0, 6);
+
+        }
+    );
+
+}
+
 </script>
 
 </body>

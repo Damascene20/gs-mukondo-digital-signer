@@ -12,182 +12,921 @@ Google Authenticator
 {% block content %}
 
 <style>
+
+/* =========================================================
+   GS MUKONDO DIGITAL SIGNER
+   MODERN 2FA SETUP
+   AUTO-VERIFY
+========================================================= */
+
+:root {
+    --2fa-bg: #f5f8fc;
+    --2fa-surface: rgba(255, 255, 255, .90);
+    --2fa-border: rgba(148, 163, 184, .22);
+
+    --2fa-text: #0f172a;
+    --2fa-muted: #64748b;
+    --2fa-soft: #94a3b8;
+
+    --2fa-primary: #2563eb;
+    --2fa-primary-dark: #1d4ed8;
+    --2fa-cyan: #06b6d4;
+
+    --2fa-success: #16a34a;
+
+    --2fa-radius: 18px;
+}
+
+
+/* =========================================================
+   PAGE
+========================================================= */
+
+.twofa-page {
+    position: relative;
+
+    width: 100%;
+    max-width: 410px;
+
+    margin: 12px auto;
+
+    padding: 8px;
+}
+
+
+/* =========================================================
+   BACKGROUND GLOW
+========================================================= */
+
+.twofa-page::before,
+.twofa-page::after {
+    content: "";
+
+    position: absolute;
+
+    border-radius: 50%;
+
+    pointer-events: none;
+
+    z-index: -1;
+
+    filter: blur(2px);
+}
+
+.twofa-page::before {
+    width: 180px;
+    height: 180px;
+
+    top: -70px;
+    left: -80px;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(37, 99, 235, .13),
+            transparent 70%
+        );
+
+    animation:
+        floatOrb 7s ease-in-out infinite;
+}
+
+.twofa-page::after {
+    width: 150px;
+    height: 150px;
+
+    right: -70px;
+    bottom: -40px;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(6, 182, 212, .12),
+            transparent 70%
+        );
+
+    animation:
+        floatOrb 9s ease-in-out infinite reverse;
+}
+
+@keyframes floatOrb {
+
+    0%,
+    100% {
+        transform: translate3d(0, 0, 0);
+    }
+
+    50% {
+        transform: translate3d(8px, -10px, 0);
+    }
+}
+
+
+/* =========================================================
+   CARD
+========================================================= */
+
+.twofa-card {
+    position: relative;
+
+    overflow: hidden;
+
+    padding: 24px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, .97),
+            rgba(248, 250, 252, .92)
+        );
+
+    border: 1px solid var(--2fa-border);
+
+    border-radius: var(--2fa-radius);
+
+    box-shadow:
+        0 24px 55px rgba(15, 23, 42, .09),
+        0 4px 12px rgba(15, 23, 42, .04);
+
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+
+    text-align: center;
+
+    animation:
+        cardAppear .45s cubic-bezier(.2,.8,.2,1);
+}
+
+@keyframes cardAppear {
+
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(14px)
+            scale(.985);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0)
+            scale(1);
+    }
+}
+
+
+/* =========================================================
+   TOP ACCENT
+========================================================= */
+
+.twofa-card::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 8%;
+
+    width: 84%;
+    height: 2px;
+
+    border-radius: 10px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            var(--2fa-primary),
+            var(--2fa-cyan),
+            transparent
+        );
+
+    opacity: .85;
+}
+
+
+/* =========================================================
+   SECURITY ICON
+========================================================= */
+
+.twofa-icon {
+    position: relative;
+
+    width: 52px;
+    height: 52px;
+
+    margin: 1px auto 13px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 15px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #eff6ff,
+            #ecfeff
+        );
+
+    border: 1px solid #dbeafe;
+
+    font-size: 23px;
+
+    box-shadow:
+        0 8px 22px rgba(37, 99, 235, .10);
+
+    animation:
+        iconPulse 3s ease-in-out infinite;
+}
+
+.twofa-icon::after {
+    content: "";
+
+    position: absolute;
+
+    inset: -5px;
+
+    border-radius: 18px;
+
+    border: 1px solid rgba(37, 99, 235, .08);
+
+    animation:
+        iconRing 3s ease-in-out infinite;
+}
+
+@keyframes iconPulse {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-2px);
+    }
+}
+
+@keyframes iconRing {
+
+    0%,
+    100% {
+        opacity: .35;
+        transform: scale(.96);
+    }
+
+    50% {
+        opacity: .8;
+        transform: scale(1.03);
+    }
+}
+
+
+/* =========================================================
+   TITLE
+========================================================= */
+
+.twofa-card h2 {
+    margin: 0;
+
+    color: var(--2fa-text);
+
+    font-size: 20px;
+
+    line-height: 1.25;
+
+    font-weight: 780;
+
+    letter-spacing: -.45px;
+}
+
+
+/* =========================================================
+   DESCRIPTION
+========================================================= */
+
+.twofa-subtitle {
+    max-width: 320px;
+
+    margin: 8px auto 17px;
+
+    color: var(--2fa-muted);
+
+    font-size: 12px;
+
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   QR CONTAINER
+========================================================= */
+
+.qr-section {
+    position: relative;
+
+    display: inline-block;
+
+    padding: 10px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #ffffff,
+            #f8fafc
+        );
+
+    border: 1px solid #e2e8f0;
+
+    border-radius: 15px;
+
+    box-shadow:
+        0 10px 28px rgba(15, 23, 42, .07);
+
+    transition:
+        transform .25s ease,
+        box-shadow .25s ease;
+}
+
+.qr-section:hover {
+    transform:
+        translateY(-3px);
+
+    box-shadow:
+        0 15px 32px rgba(15, 23, 42, .11);
+}
+
+
+/* =========================================================
+   QR CORNERS
+========================================================= */
+
+.qr-section::before,
+.qr-section::after {
+    content: "";
+
+    position: absolute;
+
+    width: 15px;
+    height: 15px;
+
+    border-color: var(--2fa-primary);
+
+    border-style: solid;
+
+    opacity: .65;
+}
+
+.qr-section::before {
+    top: 5px;
+    left: 5px;
+
+    border-width: 2px 0 0 2px;
+
+    border-radius: 5px 0 0 0;
+}
+
+.qr-section::after {
+    right: 5px;
+    bottom: 5px;
+
+    border-width: 0 2px 2px 0;
+
+    border-radius: 0 0 5px 0;
+}
+
+
+/* =========================================================
+   QR CODE
+========================================================= */
+
+.qr-box img {
+    width: 150px;
+    height: 150px;
+
+    display: block;
+
+    border-radius: 7px;
+}
+
+
+/* =========================================================
+   QR STATUS
+========================================================= */
+
+.qr-status {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 5px;
+
+    margin-top: 8px;
+
+    color: #64748b;
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+    letter-spacing: .45px;
+
+    text-transform: uppercase;
+}
+
+.qr-status-dot {
+    width: 6px;
+    height: 6px;
+
+    border-radius: 50%;
+
+    background: #22c55e;
+
+    box-shadow:
+        0 0 0 3px rgba(34, 197, 94, .10);
+}
+
+
+/* =========================================================
+   MANUAL KEY
+========================================================= */
+
+.manual-key {
+    position: relative;
+
+    margin-top: 14px;
+
+    padding: 11px 12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(239, 246, 255, .95),
+            rgba(236, 254, 255, .80)
+        );
+
+    border: 1px solid #dbeafe;
+
+    border-radius: 10px;
+
+    text-align: left;
+
+    overflow: hidden;
+}
+
+.manual-key::after {
+    content: "";
+
+    position: absolute;
+
+    width: 70px;
+    height: 70px;
+
+    right: -35px;
+    top: -35px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(37, 99, 235, .06);
+}
+
+.manual-key label {
+    display: block;
+
+    margin-bottom: 4px;
+
+    color: #64748b;
+
+    font-size: 8.5px;
+
+    font-weight: 800;
+
+    letter-spacing: .65px;
+
+    text-transform: uppercase;
+}
+
+.manual-key code {
+    position: relative;
+
+    z-index: 1;
+
+    display: block;
+
+    color: #1d4ed8;
+
+    font-size: 10.5px;
+
+    font-weight: 750;
+
+    line-height: 1.5;
+
+    word-break: break-all;
+}
+
+
+/* =========================================================
+   VERIFICATION FORM
+========================================================= */
+
+.verify-form {
+    margin-top: 16px;
+
+    text-align: left;
+}
+
+.verify-form label {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-bottom: 6px;
+
+    color: #344054;
+
+    font-size: 11.5px;
+
+    font-weight: 750;
+}
+
+.verify-form label::after {
+    content: "6 DIGITS";
+
+    color: #98a2b3;
+
+    font-size: 8px;
+
+    letter-spacing: .45px;
+}
+
+
+/* =========================================================
+   OTP INPUT
+========================================================= */
+
+.otp-input {
+    width: 100%;
+
+    height: 50px;
+
+    padding: 7px 10px;
+
+    border: 1px solid #d9e1ec;
+
+    border-radius: 11px;
+
+    outline: none;
+
+    background:
+        linear-gradient(
+            180deg,
+            #ffffff,
+            #f8fafc
+        );
+
+    color: #0f172a;
+
+    text-align: center;
+
+    font-size: 22px;
+
+    font-weight: 800;
+
+    letter-spacing: 7px;
+
+    box-sizing: border-box;
+
+    transition:
+        border-color .2s ease,
+        box-shadow .2s ease,
+        transform .2s ease,
+        background .2s ease;
+}
+
+.otp-input:hover {
+    border-color: #bfdbfe;
+}
+
+.otp-input:focus {
+    background: #ffffff;
+
+    border-color: var(--2fa-primary);
+
+    box-shadow:
+        0 0 0 3px rgba(37, 99, 235, .09),
+        0 6px 18px rgba(37, 99, 235, .06);
+
+    transform:
+        translateY(-1px);
+}
+
+.otp-input::placeholder {
+    color: #cbd5e1;
+
+    letter-spacing: 7px;
+}
+
+
+/* =========================================================
+   VERIFYING STATE
+========================================================= */
+
+.otp-input.verifying {
+    border-color: var(--2fa-success);
+
+    background: #f0fdf4;
+
+    color: var(--2fa-success);
+
+    box-shadow:
+        0 0 0 3px rgba(22, 163, 74, .08);
+}
+
+
+/* =========================================================
+   ACTIONS
+========================================================= */
+
+.twofa-actions {
+    display: flex;
+
+    gap: 8px;
+
+    margin-top: 11px;
+}
+
+.twofa-actions button,
+.twofa-actions a {
+    flex: 1;
+
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 8px 10px;
+
+    border-radius: 10px;
+
+    font-size: 11.5px;
+
+    font-weight: 750;
+
+    text-decoration: none;
+
+    cursor: pointer;
+
+    box-sizing: border-box;
+
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease,
+        border-color .2s ease,
+        background .2s ease;
+}
+
+
+/* =========================================================
+   ENABLE BUTTON
+========================================================= */
+
+.enable-btn {
+    position: relative;
+
+    overflow: hidden;
+
+    border: 0;
+
+    background:
+        linear-gradient(
+            135deg,
+            #2563eb,
+            #1d4ed8 55%,
+            #155e75
+        );
+
+    color: #ffffff;
+
+    box-shadow:
+        0 7px 17px rgba(37, 99, 235, .22);
+}
+
+.enable-btn::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: -100%;
+
+    width: 70%;
+    height: 100%;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,255,255,.20),
+            transparent
+        );
+
+    transform: skewX(-20deg);
+
+    transition:
+        left .55s ease;
+}
+
+.enable-btn:hover::before {
+    left: 130%;
+}
+
+.enable-btn:hover {
+    transform:
+        translateY(-1px);
+
+    box-shadow:
+        0 10px 22px rgba(37, 99, 235, .27);
+}
+
+.enable-btn:active {
+    transform:
+        translateY(0);
+}
+
+
+/* =========================================================
+   DISABLED / VERIFYING BUTTON
+========================================================= */
+
+.enable-btn:disabled {
+    cursor: wait;
+
+    opacity: .75;
+
+    transform: none;
+
+    box-shadow:
+        0 5px 12px rgba(37, 99, 235, .12);
+}
+
+
+/* =========================================================
+   CANCEL
+========================================================= */
+
+.cancel-btn {
+    border: 1px solid #d9e1ec;
+
+    background: rgba(255,255,255,.8);
+
+    color: #475467;
+}
+
+.cancel-btn:hover {
+    background: #ffffff;
+
+    border-color: #cbd5e1;
+
+    transform:
+        translateY(-1px);
+
+    box-shadow:
+        0 5px 13px rgba(15, 23, 42, .06);
+}
+
+
+/* =========================================================
+   SECURITY FOOTER
+========================================================= */
+
+.twofa-note {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 6px;
+
+    margin-top: 14px;
+
+    padding-top: 12px;
+
+    border-top: 1px solid #edf0f4;
+
+    color: #94a3b8;
+
+    font-size: 9.5px;
+
+    line-height: 1.5;
+}
+
+.twofa-note::before {
+    content: "●";
+
+    color: #22c55e;
+
+    font-size: 7px;
+
+    text-shadow:
+        0 0 6px rgba(34, 197, 94, .45);
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 560px) {
+
     .twofa-page {
-        max-width: 520px;
-        margin: 30px auto;
+        max-width: 365px;
+
+        margin: 8px auto;
+
+        padding: 5px;
     }
 
     .twofa-card {
-        background: #fff;
-        border: 1px solid #e6eaf0;
-        border-radius: 20px;
-        padding: 28px;
-        box-shadow: 0 12px 35px rgba(16, 42, 67, .08);
-        text-align: center;
-    }
-
-    .twofa-icon {
-        width: 52px;
-        height: 52px;
-        margin: 0 auto 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 15px;
-        background: #eaf4ff;
-        font-size: 24px;
+        padding: 20px;
     }
 
     .twofa-card h2 {
-        margin: 0;
-        color: #102a43;
-        font-size: 21px;
-    }
-
-    .twofa-subtitle {
-        margin: 7px auto 20px;
-        color: #718096;
-        font-size: 13px;
-        line-height: 1.5;
-    }
-
-    .qr-box {
-        display: inline-flex;
-        padding: 14px;
-        background: #f7f9fc;
-        border: 1px solid #e5e7eb;
-        border-radius: 16px;
+        font-size: 19px;
     }
 
     .qr-box img {
-        width: 190px;
-        height: 190px;
-        display: block;
-        border-radius: 8px;
-    }
-
-    .manual-key {
-        margin-top: 16px;
-        padding: 12px;
-        background: #f1f7ff;
-        border-radius: 11px;
-        text-align: left;
-    }
-
-    .manual-key label {
-        display: block;
-        margin-bottom: 5px;
-        color: #475467;
-        font-size: 11px;
-        font-weight: 700;
-        text-transform: uppercase;
-    }
-
-    .manual-key code {
-        display: block;
-        color: #173f5f;
-        font-size: 12px;
-        font-weight: 700;
-        word-break: break-all;
-    }
-
-    .verify-form {
-        margin-top: 20px;
-        text-align: left;
-    }
-
-    .verify-form label {
-        display: block;
-        margin-bottom: 7px;
-        color: #344054;
-        font-size: 13px;
-        font-weight: 700;
-    }
-
-    .otp-input {
-        width: 100%;
-        padding: 13px;
-        border: 1px solid #d9dee8;
-        border-radius: 11px;
-        outline: none;
-        text-align: center;
-        font-size: 23px;
-        font-weight: 800;
-        letter-spacing: 7px;
-        box-sizing: border-box;
-    }
-
-    .otp-input:focus {
-        border-color: #173f5f;
-        box-shadow: 0 0 0 3px rgba(23, 63, 95, .10);
+        width: 140px;
+        height: 140px;
     }
 
     .twofa-actions {
-        display: flex;
-        gap: 10px;
-        margin-top: 15px;
+        flex-direction: column;
     }
 
     .twofa-actions button,
     .twofa-actions a {
-        flex: 1;
-        padding: 12px;
-        border-radius: 10px;
-        text-align: center;
-        text-decoration: none;
-        font-size: 13px;
-        font-weight: 700;
-        cursor: pointer;
-        box-sizing: border-box;
+        width: 100%;
+    }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .twofa-card,
+    .twofa-icon,
+    .twofa-icon::after,
+    .twofa-page::before,
+    .twofa-page::after {
+        animation: none;
     }
 
-    .enable-btn {
-        border: 0;
-        background: #173f5f;
-        color: #fff;
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        transition: none !important;
     }
+}
 
-    .cancel-btn {
-        border: 1px solid #d9dee8;
-        background: #fff;
-        color: #475467;
-    }
-
-    .twofa-note {
-        margin-top: 16px;
-        color: #98a2b3;
-        font-size: 11px;
-        line-height: 1.5;
-    }
-
-    @media (max-width: 560px) {
-        .twofa-page {
-            margin: 15px auto;
-        }
-
-        .twofa-card {
-            padding: 20px;
-        }
-
-        .qr-box img {
-            width: 170px;
-            height: 170px;
-        }
-
-        .twofa-actions {
-            flex-direction: column;
-        }
-    }
 </style>
 
+
+<!-- =======================================================
+     2FA SETUP
+======================================================= -->
 
 <div class="twofa-page">
 
     <div class="twofa-card">
 
-        <div class="twofa-icon">🔐</div>
 
-        <h2>Enable Two-Factor Authentication</h2>
+        <!-- SECURITY ICON -->
+
+        <div class="twofa-icon">
+            🔐
+        </div>
+
+
+        <!-- TITLE -->
+
+        <h2>
+            Enable Two-Factor Authentication
+        </h2>
+
+
+        <!-- DESCRIPTION -->
 
         <p class="twofa-subtitle">
             Scan the QR code with Google Authenticator,
@@ -195,34 +934,64 @@ Google Authenticator
         </p>
 
 
-        <!-- QR CODE -->
+        <!-- =================================================
+             QR CODE
+        ================================================== -->
 
-        <div class="qr-box">
-            <img
-                src="data:image/png;base64,{{ qr_code }}"
-                alt="Google Authenticator QR Code"
-            >
+        <div class="qr-section">
+
+            <div class="qr-box">
+
+                <img
+                    src="data:image/png;base64,{{ qr_code }}"
+                    alt="Google Authenticator QR Code"
+                >
+
+            </div>
+
+
+            <div class="qr-status">
+
+                <span class="qr-status-dot"></span>
+
+                Secure QR Configuration
+
+            </div>
+
         </div>
 
 
-        <!-- MANUAL KEY -->
+        <!-- =================================================
+             MANUAL KEY
+        ================================================== -->
 
         <div class="manual-key">
 
-            <label>Manual Setup Key</label>
+            <label>
+                Manual Setup Key
+            </label>
 
-            <code>{{ secret }}</code>
+            <code>
+                {{ secret }}
+            </code>
 
         </div>
 
 
-        <!-- VERIFICATION -->
+        <!-- =================================================
+             VERIFICATION FORM
+        ================================================== -->
 
-        <form method="POST" class="verify-form">
+        <form
+            method="POST"
+            class="verify-form"
+            id="twofaForm"
+        >
 
             <label for="otp_code">
                 Verification Code
             </label>
+
 
             <input
                 id="otp_code"
@@ -236,17 +1005,24 @@ Google Authenticator
                 placeholder="000000"
                 required
                 autofocus
+                aria-label="6-digit verification code"
             >
 
+
+            <!-- =================================================
+                 ACTION BUTTONS
+            ================================================== -->
 
             <div class="twofa-actions">
 
                 <button
                     type="submit"
                     class="enable-btn"
+                    id="enableBtn"
                 >
-                    ✓ Enable 2FA
+                    ✓&nbsp; Enable 2FA
                 </button>
+
 
                 <a
                     href="{{ url_for('settings') }}"
@@ -260,9 +1036,12 @@ Google Authenticator
         </form>
 
 
+        <!-- =================================================
+             SECURITY FOOTER
+        ================================================== -->
+
         <div class="twofa-note">
-            Your account will require Google Authenticator
-            verification on future logins.
+            Protected by Google Authenticator
         </div>
 
     </div>
@@ -271,13 +1050,129 @@ Google Authenticator
 
 
 <script>
-    const otp = document.getElementById("otp_code");
 
-    otp.addEventListener("input", function () {
-        this.value = this.value
-            .replace(/\D/g, "")
-            .slice(0, 6);
-    });
+/* =========================================================
+   GS MUKONDO DIGITAL SIGNER
+   AUTOMATIC 2FA VERIFICATION
+========================================================= */
+
+const otp =
+    document.getElementById("otp_code");
+
+const form =
+    document.getElementById("twofaForm");
+
+const button =
+    document.getElementById("enableBtn");
+
+let verifying = false;
+
+
+/* =========================================================
+   OTP INPUT
+========================================================= */
+
+if (otp && form) {
+
+    otp.addEventListener(
+        "input",
+        function () {
+
+            /* Only allow numbers */
+
+            this.value =
+                this.value
+                    .replace(/\D/g, "")
+                    .slice(0, 6);
+
+
+            /* =================================================
+               AUTO VERIFY
+            ================================================= */
+
+            if (
+                this.value.length === 6 &&
+                !verifying
+            ) {
+
+                verifying = true;
+
+
+                /* Visual verification state */
+
+                this.classList.add("verifying");
+
+
+                /* Disable input */
+
+                this.readOnly = true;
+
+
+                /* Change button */
+
+                if (button) {
+
+                    button.disabled = true;
+
+                    button.innerHTML =
+                        "⏳&nbsp; Verifying...";
+
+                }
+
+
+                /*
+                 * Small delay allows the user
+                 * to see the final digit before
+                 * the form is submitted.
+                 */
+
+                setTimeout(
+                    function () {
+
+                        form.submit();
+
+                    },
+                    180
+                );
+
+            }
+
+        }
+    );
+
+
+    /* =========================================================
+       PREVENT DOUBLE SUBMISSION
+    ========================================================= */
+
+    form.addEventListener(
+        "submit",
+        function () {
+
+            if (verifying) {
+                return;
+            }
+
+            /*
+             * Normal manual submission.
+             */
+
+            verifying = true;
+
+            if (button) {
+
+                button.disabled = true;
+
+                button.innerHTML =
+                    "⏳&nbsp; Verifying...";
+
+            }
+
+        }
+    );
+
+}
+
 </script>
 
 {% endblock %}
